@@ -310,8 +310,8 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cube1, cube2) {
         print("moving back to start")
         cubepos[0]-=dx;
         cubepos[2] -= dx
-      cube.moveTo({ x: cubepos[0], y: cubepos[1]}, 80, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel);
-      cube.moveTo({ x: cubepos[2], y: cubepos[3]}, 80, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel);
+      cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, 80, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel);
+      cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, 80, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel);
         timeLast = frameCount; 
       }
         if((cubepos[0] < inflectionX) && within(cube.sensorX, cubepos[0], 25) && (cubepos[2] < inflectionX) && within(cube.sensorX, cubepos[2], 25)
@@ -321,8 +321,8 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cube1, cube2) {
         cubepos[3] += dy
         print("moving y")
         print(cubepos);
-      cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
-      cube.moveTo( { x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
+      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
+      cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
         j+=1
         timeLast = frameCount;
         // sweeping = false;
