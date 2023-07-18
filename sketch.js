@@ -456,7 +456,7 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
       (frameCount - timeLast)>lockoutT && 
       cube2.sensorY > maxArr[3] && 
       cube3.sensorY > maxArr[5] &&
-      cube3.sensorY > maxArr[7]){
+      cube4.sensorY > maxArr[7]){
       sweeping = false
       cubepos = minArr
       print("done sweeping")
@@ -545,13 +545,13 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
         timeLast = frameCount; 
       }
         if((cubepos[0] < inflectionX) && 
-        within(cube1.sensorX, cubepos[0], 25) && 
+        within(cube1.sensorX, cubepos[0], 20) && 
         (cubepos[2] < inflectionX) && 
-        within(cube2.sensorX, cubepos[2], 25) &&
+        within(cube2.sensorX, cubepos[2], 20) &&
         (cubepos[4] < inflectionX2) &&
-        within(cube3.sensorX, cubepos[4], 25) &&
+        within(cube3.sensorX, cubepos[4], 20) &&
         (cubepos[6] < inflectionX2) && 
-        within(cube4.sensorX, cubepos[6], 25))
+        within(cube4.sensorX, cubepos[6], 20))
 {
       
         cubepos[1] += dy;
@@ -559,6 +559,7 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
         cubepos[5] += dy
         cubepos[7] += dy
         //print("moving y")
+        print(cube4.sensorY)
         print(cubepos);
       cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
       cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
@@ -589,7 +590,7 @@ image(img, 0, 0, 200, 200)
     sweepMat3(20, [70,70, 70, 210, 70, 350], [420, 210, 420, 350, 420, 420], 30, gCubes[0], gCubes[1], gCubes[2]);
   }
     else if (gCubes.length==4) {
-      sweepMat4(20, [70,70, 70,245, 245,70, 245, 245], [245, 245, 245, 420, 420, 245, 420,420], 30, gCubes[0], gCubes[1], gCubes[2], gCubes[3]);
+      sweepMat4(20, [75,75, 75,245, 245,75, 245, 245], [245, 245, 245, 400, 400, 245, 400,400], 30, gCubes[0], gCubes[1], gCubes[2], gCubes[3]);
   }
   }
 drawCubes()
