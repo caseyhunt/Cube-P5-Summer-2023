@@ -1,4 +1,4 @@
-let connectButton;
+let connectButton, useAnyCubeButton;
 let lightColor
 let gCubes = [];
 let cubeColor = [];
@@ -13,6 +13,7 @@ let sweepPoints
 let j  = 0;
 let cubepos = [];
 let timeLast = 0;
+let ourBool;
 function setup() {
   createCanvas(400, 400);
   img = loadImage("img.png")
@@ -41,8 +42,13 @@ function setup() {
   cube4Button.mousePressed(cube4)
   sweepButton = createButton("sweep")
   sweepButton.mousePressed(sweep)
+  useAnyCubeButton = createButton("anyCube")
+  useAnyCubeButton.mousePressed(useAnyCube)
+  
   
 }
+
+
 
 function within (start, end, withinN) {
   if (abs(start-end) <withinN) {
@@ -54,25 +60,8 @@ function within (start, end, withinN) {
 }
 
 
-function createPoints(xChange, yChange, startX, startY) {
-  let iterations = (windowHeight-startY)/yChange
-  arr = [{x:startX, y:startY}]
-  
-  for (var i = 0;i<=iterations; i++){
-    if (i % 2 == 0) {
-      startX += xChange
-      arr.push( {x: startX, y:startY} )
-      startY += yChange
-      arr.push({x: startX, y:startY})
-    }
-    else {
-      startX -=xChange
-      arr.push( {x: startX, y:startY} )
-      startY +=yChange
-      arr.push( {x: startX, y:startY} )
-    }
-  }
-  return arr
+function useAnyCube() {
+  ourBool = true
 }
 
 function sweep() {
@@ -146,6 +135,7 @@ function ConnectCube(){
 }
 
 function cube1(){
+  ourBool = false
   selectedCube = gCubes[0]
 
   for(var i=0; i<cubeColor.length; i++){
@@ -155,6 +145,7 @@ function cube1(){
 }
 
 function cube2(){
+  ourBool = false
   selectedCube = gCubes[1]
   for(var i=0; i<cubeColor.length; i++){
     cubeColor[i] = 'black';
@@ -163,6 +154,7 @@ function cube2(){
 }
 
 function cube3(){
+  ourBool = false
   selectedCube = gCubes[2]
   for(var i=0; i<cubeColor.length; i++){
     cubeColor[i] = 'black';
@@ -172,6 +164,7 @@ function cube3(){
 
 
 function cube4(){
+  ourBool = false
   selectedCube = gCubes[3]
   for(var i=0; i<cubeColor.length; i++){
     cubeColor[i] = 'black';
@@ -665,7 +658,7 @@ image(img, 0, 0, 200, 200)
   }
   }
 drawCubes()
-print(closest_cube(415, 420))
+
   
 
 
@@ -699,5 +692,10 @@ function mouseClicked(){
   }
   if (selectedCube == gCubes[3]){
     moveCube(gCubes[3])
+  }
+
+  if (ourBool) {
+    newCube = closest_cube(mouseX, mouseY)
+  newCube.moveTo( { x: mouseX, y: mouseY}, 80, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel )
   }
 }
