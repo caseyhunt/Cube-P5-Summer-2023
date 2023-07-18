@@ -575,6 +575,77 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
 }
 }
 
+function closest_cube(x, y) {
+let cube1dist
+let cube2dist
+let cube3dist
+let cube4dist
+let minimum
+  if (gCubes.length ==1) {
+    return gCubes[0]
+  }
+
+  if (gCubes.length == 2) {
+    cube1dist = dist(gCubes[0].sensorX, gCubes[0].sensorY, x, y)
+
+    cube2dist = dist(gCubes[1].sensorX, gCubes[1].sensorY, x, y)
+
+    if (cube1dist < cube2dist) {
+      return gCubes[0]
+    }
+    else {
+      return gCubes[1]
+    }
+  }
+  
+  if (gCubes.length ==3) {
+    cube1dist = dist(gCubes[0].sensorX, gCubes[0].sensorY, x, y)
+
+    cube2dist = dist(gCubes[1].sensorX, gCubes[1].sensorY, x, y)
+
+    cube3dist = dist(gCubes[2].sensorX, gCubes[2].sensorY, x, y)
+    
+    minimum = min(cube1dist, cube2dist, cube3dist)
+
+    if (minimum == cube1dist) {
+      return gCubes[0]
+    }
+    else if (minimum == cube2dist) {
+      return gCubes[1]
+    }
+
+    else if (minimum == cube3dist) {
+      return gCubes[2]
+    }
+  }
+
+  if (gCubes.length == 4) {
+    cube1dist = dist(gCubes[0].sensorX, gCubes[0].sensorY, x, y)
+
+    cube2dist = dist(gCubes[1].sensorX, gCubes[1].sensorY, x, y)
+
+    cube3dist = dist(gCubes[2].sensorX, gCubes[2].sensorY, x, y)
+
+    cube4dist = dist(gCubes[3].sensorX, gCubes[3].sensorY, x, y)
+
+    minimum = min(cube1dist, cube2dist, cube3dist, cube4dist)
+
+    if (minimum == cube1dist) {
+      return gCubes[0]
+    }
+    else if (minimum == cube2dist) {
+      return gCubes[1]
+    }
+    else if (minimum == cube3dist) {
+      return gCubes[2]
+    }
+    else if (minimum == cube4dist) {
+      return gCubes[3]
+    }
+  }
+}
+
+
 function draw() {
 background(0)
 image(img, 0, 0, 200, 200)
@@ -594,6 +665,7 @@ image(img, 0, 0, 200, 200)
   }
   }
 drawCubes()
+print(closest_cube(420, 420))
   
 
 
