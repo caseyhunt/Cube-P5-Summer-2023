@@ -14,6 +14,7 @@ let j  = 0;
 let cubepos = [];
 let timeLast = 0;
 let ourBool;
+let newCube
 function setup() {
   createCanvas(400, 400);
   img = loadImage("img.png")
@@ -567,7 +568,9 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
   
 }
 }
-
+function ourDist(x1, x2, y1, y2){
+    return sqrt((x2-x1)**2 + (y2-y1)**2);
+}
 function closest_cube(x, y) {
   let cube1dist
   let cube2dist
@@ -579,14 +582,22 @@ function closest_cube(x, y) {
   }
 
   if (gCubes.length == 2) {
-    cube1dist = dist(gCubes[0].sensorX, gCubes[0].sensorY, x, y)
+    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, x, y)
+    print(gCubes[0].sensorX)
+    print(gCubes[0].sensorY)
 
-    cube2dist = dist(gCubes[1].sensorX, gCubes[1].sensorY, x, y)
+    print(gCubes[1].sensorX)
+    print(gCubes[1].sensorY)
+    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, x, y)
+    print(cube1dist)
+    print(cube2dist)
 
     if (cube1dist < cube2dist) {
+      print("cube1")
       return gCubes[0]
     }
-    else {
+    else if (cube1dist > cube2dist){
+      print("cube2")
       return gCubes[1]
     }
   }
@@ -670,7 +681,8 @@ function moveCube(commoncube){
    if (mouseX < 200 && mouseY < 200) {
       commoncube.moveTo( { x: (mouseX+35) *2, y: (mouseY+20)*2}, 80, undefined, P5tCube.easeTypeId.decel )
      square((commoncube.sensorX/2) -35, commoncube.sensorY/2 - 20, 10, 10)
-   }
+     text(commoncube, commoncube.sensorX, commoncube.sensorY)
+    }
    else {
 commoncube.stop()
    }
@@ -695,7 +707,7 @@ function mouseClicked(){
   }
 
   if (ourBool) {
-    newCube = closest_cube(mouseX, mouseY)
-  newCube.moveTo( { x: mouseX, y: mouseY}, 80, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel )
+    print(closest_cube(mouseX, mouseY));
+    moveCube(closest_cube(mouseX, mouseY))
   }
 }
