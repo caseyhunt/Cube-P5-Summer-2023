@@ -577,6 +577,8 @@ function closest_cube(x, y) {
   let cube3dist = 0;
   let cube4dist = 0;
   let minimum
+  let offsetX = (x+35)*2
+  let offsetY = (y+20)*2
   print("length of gCubes: ", gCubes.length);
   print("target x,y", x, ",", y)
   if (gCubes.length ==1) {
@@ -584,13 +586,13 @@ function closest_cube(x, y) {
   }
 
   if (gCubes.length == 2) {
-    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, (x+35)*2, (y+20)*2);
+    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, offsetX, offsetY);
     // print(gCubes[0].sensorX)
     // print(gCubes[0].sensorY)
 
     // print(gCubes[1].sensorX)
     // print(gCubes[1].sensorY)
-    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, (x+35)*2, (y+20)*2)
+    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, offsetX, offsetY)
     print("cube1", cube1dist)
     print("cube2", cube2dist)
 
@@ -604,11 +606,11 @@ function closest_cube(x, y) {
   }
   
   if (gCubes.length ==3) {
-    cube1dist = dist(gCubes[0].sensorX, gCubes[0].sensorY, x, y)
+    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, offsetX, offsetY)
 
-    cube2dist = dist(gCubes[1].sensorX, gCubes[1].sensorY, x, y)
+    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, offsetX, offsetY)
 
-    cube3dist = dist(gCubes[2].sensorX, gCubes[2].sensorY, x, y)
+    cube3dist = ourDist(gCubes[2].sensorX, gCubes[2].sensorY, offsetX, offsetY)
     
     minimum = min(cube1dist, cube2dist, cube3dist)
 
@@ -625,13 +627,13 @@ function closest_cube(x, y) {
   }
 
   if (gCubes.length == 4) {
-    cube1dist = dist(gCubes[0].sensorX, gCubes[0].sensorY, x, y)
+    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, offsetX, offsetY)
 
-    cube2dist = dist(gCubes[1].sensorX, gCubes[1].sensorY, x, y)
+    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, offsetX, offsetY)
 
-    cube3dist = dist(gCubes[2].sensorX, gCubes[2].sensorY, x, y)
+    cube3dist = ourDist(gCubes[2].sensorX, gCubes[2].sensorY, offsetX, offsetY)
 
-    cube4dist = dist(gCubes[3].sensorX, gCubes[3].sensorY, x, y)
+    cube4dist = ourDist(gCubes[3].sensorX, gCubes[3].sensorY, offsetX, offsetY)
 
     minimum = min(cube1dist, cube2dist, cube3dist, cube4dist)
 
