@@ -568,36 +568,37 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
   
 }
 }
-function ourDist(x1, x2, y1, y2){
-    return sqrt((x2-x1)**2 + (y2-y1)**2);
+function ourDist(x1, y1, x2, y2){
+    return sqrt(sq(x2-x1) + sq(y2-y1));
 }
 function closest_cube(x, y) {
-  let cube1dist
-  let cube2dist
-  let cube3dist
-  let cube4dist
+  let cube1dist = 0;
+  let cube2dist = 0;
+  let cube3dist = 0;
+  let cube4dist = 0;
   let minimum
+  print("length of gCubes: ", gCubes.length);
+  print("target x,y", x, ",", y)
   if (gCubes.length ==1) {
     return gCubes[0]
   }
 
   if (gCubes.length == 2) {
-    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, x, y)
-    print(gCubes[0].sensorX)
-    print(gCubes[0].sensorY)
+    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, (x+35)*2, (y+20)*2);
+    // print(gCubes[0].sensorX)
+    // print(gCubes[0].sensorY)
 
-    print(gCubes[1].sensorX)
-    print(gCubes[1].sensorY)
-    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, x, y)
-    print(cube1dist)
-    print(cube2dist)
+    // print(gCubes[1].sensorX)
+    // print(gCubes[1].sensorY)
+    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, (x+35)*2, (y+20)*2)
+    print("cube1", cube1dist)
+    print("cube2", cube2dist)
 
     if (cube1dist < cube2dist) {
-      print("cube1")
+      print("returning cube1")
       return gCubes[0]
-    }
-    else if (cube1dist > cube2dist){
-      print("cube2")
+    }else{
+      print("returning cube2")
       return gCubes[1]
     }
   }
@@ -693,6 +694,8 @@ commoncube.stop()
 }
 
 function mouseClicked(){
+  testX = mouseX;
+  testY = mouseY;
   if (selectedCube == gCubes[0]){
     moveCube(gCubes[0])
   }
@@ -707,7 +710,9 @@ function mouseClicked(){
   }
 
   if (ourBool) {
-    print(closest_cube(mouseX, mouseY));
+    print("dist to 1", ourDist(gCubes[0].sensorX, gCubes[0].sensorY, (testX+35) *2, (testY+20)*2))
+    print("dist to 2", ourDist(gCubes[1].sensorX, gCubes[1].sensorY, (testX+35) *2, (testY+20)*2))
+    // print("closest cube:", closest_cube((mouseX+35) *2, (mouseY+20)*2));
     moveCube(closest_cube(mouseX, mouseY))
   }
 }
