@@ -576,11 +576,11 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
 }
 
 function closest_cube(x, y) {
-let cube1dist
-let cube2dist
-let cube3dist
-let cube4dist
-let minimum
+  let cube1dist
+  let cube2dist
+  let cube3dist
+  let cube4dist
+  let minimum
   if (gCubes.length ==1) {
     return gCubes[0]
   }
@@ -665,7 +665,7 @@ image(img, 0, 0, 200, 200)
   }
   }
 drawCubes()
-print(closest_cube(420, 420))
+print(closest_cube(415, 420))
   
 
 
