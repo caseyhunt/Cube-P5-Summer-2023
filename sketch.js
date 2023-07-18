@@ -583,7 +583,7 @@ image(img, 0, 0, 200, 200)
   sweepMat(20, [70,70], [420,420.5], 30, gCubes[0]);
     }
     else if (gCubes.length==2) {
-  sweepMat2(20, [70,70, 70, 220], [420, 220,420, 420.5], 30, gCubes[0], gCubes[1]);
+  sweepMat2(20, [70,70, 70, 230], [420, 200,420, 420.5], 30, gCubes[0], gCubes[1]);
       
     }
     else if (gCubes.length==3) {
