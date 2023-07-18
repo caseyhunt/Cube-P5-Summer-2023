@@ -572,85 +572,25 @@ function ourDist(x1, y1, x2, y2){
     return sqrt(sq(x2-x1) + sq(y2-y1));
 }
 function closest_cube(x, y) {
-  let cube1dist = 0;
-  let cube2dist = 0;
-  let cube3dist = 0;
-  let cube4dist = 0;
   let minimum
-  let offsetX = (x+35)*2
-  let offsetY = (y+20)*2
-  print("length of gCubes: ", gCubes.length);
-  print("target x,y", x, ",", y)
-  if (gCubes.length ==1) {
-    return gCubes[0]
-  }
+  let offsetX = (x+35)*2, offsetY = (y+20)*2;
+  let vArr = [];
+  for(var n = 0; n<gCubes.length; n++){
+      vArr.push(ourDist(gCubes[n].sensorX,gCubes[n].sensorY, offsetX, offsetY))
 
-  if (gCubes.length == 2) {
-    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, offsetX, offsetY);
-    // print(gCubes[0].sensorX)
-    // print(gCubes[0].sensorY)
-
-    // print(gCubes[1].sensorX)
-    // print(gCubes[1].sensorY)
-    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, offsetX, offsetY)
-    print("cube1", cube1dist)
-    print("cube2", cube2dist)
-
-    if (cube1dist < cube2dist) {
-      print("returning cube1")
-      return gCubes[0]
-    }else{
-      print("returning cube2")
-      return gCubes[1]
+      }
+    minimum = min(vArr);
+    print(vArr)
+    print(minimum)
+    for(var i = 0; i<vArr.length; i++){
+      print(i)
+      if(vArr[i] == minimum){
+        return gCubes[i];
+      }
     }
-  }
-  
-  if (gCubes.length ==3) {
-    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, offsetX, offsetY)
-
-    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, offsetX, offsetY)
-
-    cube3dist = ourDist(gCubes[2].sensorX, gCubes[2].sensorY, offsetX, offsetY)
     
-    minimum = min(cube1dist, cube2dist, cube3dist)
-
-    if (minimum == cube1dist) {
-      return gCubes[0]
-    }
-    else if (minimum == cube2dist) {
-      return gCubes[1]
-    }
-
-    else if (minimum == cube3dist) {
-      return gCubes[2]
-    }
   }
 
-  if (gCubes.length == 4) {
-    cube1dist = ourDist(gCubes[0].sensorX, gCubes[0].sensorY, offsetX, offsetY)
-
-    cube2dist = ourDist(gCubes[1].sensorX, gCubes[1].sensorY, offsetX, offsetY)
-
-    cube3dist = ourDist(gCubes[2].sensorX, gCubes[2].sensorY, offsetX, offsetY)
-
-    cube4dist = ourDist(gCubes[3].sensorX, gCubes[3].sensorY, offsetX, offsetY)
-
-    minimum = min(cube1dist, cube2dist, cube3dist, cube4dist)
-
-    if (minimum == cube1dist) {
-      return gCubes[0]
-    }
-    else if (minimum == cube2dist) {
-      return gCubes[1]
-    }
-    else if (minimum == cube3dist) {
-      return gCubes[2]
-    }
-    else if (minimum == cube4dist) {
-      return gCubes[3]
-    }
-  }
-}
 
 
 function draw() {
