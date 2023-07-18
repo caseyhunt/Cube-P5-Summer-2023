@@ -448,7 +448,7 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
   let inflectionX = maxArr[0] - 30
   let inflectionX2 = maxArr[4] - 30
   let dx = maxArr[0] - minArr[0]
-  let dx2 = maxArr[4] - minArr[4]
+  
   
   if (cube1 && cube2 && cube3 && cube4) {
     if(cube1.sensorY > maxArr[1] && 
@@ -512,12 +512,13 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
       cubepos[1] += dy;
       cubepos[3] += dy;
       cubepos[5] += dy;
-      cubepos[5] += dy;
+      cubepos[7] += dy;
       cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
       cube2.moveTo( {x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
       cube3.moveTo( {x: cubepos[4], y: cubepos[5]}, 80, undefined, P5tCube.easeTypeId.decel )
       cube4.moveTo( {x: cubepos[6], y: cubepos[7]}, 80, undefined, P5tCube.easeTypeId.decel )
       print(cube4.sensorX)
+         j+=1;
         timeLast = frameCount;
       }
         
