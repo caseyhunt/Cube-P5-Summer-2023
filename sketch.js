@@ -18,26 +18,19 @@ let newCube
 function setup() {
   createCanvas(400, 400);
   img = loadImage("img.png")
-  
-
   connectButton = createButton("connect cube")
   connectButton.mousePressed(ConnectCube)
-  
   lightColor = createButton('light')
   lightColor.mousePressed(cubeLight)
-  
   cube1Button = createButton("cube1")
   cube1Button.style('background-color', 'green')
   cube1Button.mousePressed(cube1)
-  
   cube2Button = createButton("cube2")
   cube2Button.style('background-color', 'blue')
   cube2Button.mousePressed(cube2)
-  
   cube3Button = createButton("cube3")
   cube3Button.style('background-color', 'red')
   cube3Button.mousePressed(cube3)
-  
   cube4Button = createButton("cube4")
   cube4Button.style('background-color', 'yellow')
   cube4Button.mousePressed(cube4)
@@ -45,11 +38,7 @@ function setup() {
   sweepButton.mousePressed(sweep)
   useAnyCubeButton = createButton("anyCube")
   useAnyCubeButton.mousePressed(useAnyCube)
-  
-  
 }
-
-
 
 function within (start, end, withinN) {
   if (abs(start-end) <withinN) {
@@ -60,7 +49,6 @@ function within (start, end, withinN) {
   }
 }
 
-
 function useAnyCube() {
   ourBool = true
 }
@@ -68,37 +56,17 @@ function useAnyCube() {
 function sweep() {
   sweeping = true;
   j=0;
-  print("sweeping!");
-
-     
-  }
-  
-
-
-
-
-
-
-    
-
-  
-//   while (cube.sensorY < 200) {
-//     print(start)
-    
-//     
+  print("sweeping!");  
+  }     
 
 function drawCubes(){
   push();
-
-if (gCubes[0]) {
-  
-
-  stroke(cubeColor[0]);
-  fill(cubeColor[0]);
-  square((gCubes[0].sensorX/2) -35, gCubes[0].sensorY/2 - 20, 10, 10)
-  pop();
-
-  push();
+  if (gCubes[0]) {
+    stroke(cubeColor[0]);
+    fill(cubeColor[0]);
+    square((gCubes[0].sensorX/2) -35, gCubes[0].sensorY/2 - 20, 10, 10)
+    pop();
+    push();
 }  
 if (gCubes[1]) {
   stroke(cubeColor[1]);
@@ -106,18 +74,14 @@ if (gCubes[1]) {
   square((gCubes[1].sensorX/2) -35, gCubes[1].sensorY/2 - 20, 10, 10)
 }
   pop();
-  
   push();
-  
 if (gCubes[2]) {
   stroke(cubeColor[2]);
   fill(cubeColor[2]);
   square((gCubes[2].sensorX/2) -35, gCubes[2].sensorY/2 - 20, 10, 10)
 }
   pop();
-  
   push()
-  
 if (gCubes[3]) {
   stroke(cubeColor[3]);
   fill(cubeColor[3]);
@@ -127,18 +91,12 @@ if (gCubes[3]) {
 }
 
 function ConnectCube(){
-  P5tCube.connectNewP5tCube().then( cube =>(           gCubes.push(cube)
-                                          
-  )
-
-                                  ).then( 
-    cubeColor.push(color(0, 0, 0)));
+  P5tCube.connectNewP5tCube().then( cube =>(gCubes.push(cube)) ).then(cubeColor.push(color(0, 0, 0)));
 }
 
 function cube1(){
   ourBool = false
   selectedCube = gCubes[0]
-
   for(var i=0; i<cubeColor.length; i++){
     cubeColor[i] = 'black';
   }
@@ -163,7 +121,6 @@ function cube3(){
     cubeColor[2] = 'red';
 }
 
-
 function cube4(){
   ourBool = false
   selectedCube = gCubes[3]
@@ -171,7 +128,6 @@ function cube4(){
     cubeColor[i] = 'black';
   }
     cubeColor[2] = 'yellow';
-
 }
 
 function cubeLight(){
@@ -179,17 +135,13 @@ function cubeLight(){
   if (gCubes[0]) {
     gCubes[0].turnLightOn(color(r, g, b))
   }
-  
-  
 }
 
 function randomColor(){
   r = random(255)
   g = random(255)
   b = random(255)
-  
 }
-
 
 //dy = step value (i.e. 10)
 //maxArr = [maxX, maxY]
@@ -200,7 +152,6 @@ function randomColor(){
 function sweepMat(dy, minArr, maxArr, lockoutT, cube){
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
-  
   if (cube) {
     print(cube.sensorY, j);
   if(cube.sensorY > maxArr[1] && j!=0 && (frameCount - timeLast)>lockoutT ){
@@ -223,7 +174,6 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cube){
       cube.moveTo({ x: cubepos[0], y: cubepos[1]}, 80, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel);
         timeLast = frameCount;
       }
-      
       if((cubepos[0] > inflectionX) && within(cube.sensorX, cubepos[0], 15) && (frameCount - timeLast)>lockoutT){
       // print("moving y right")
       cubepos[1] += dy;
@@ -231,24 +181,21 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cube){
         j+=1
         timeLast = frameCount;
       }
-
     }
     else if(j%2 == 0){   
       print("second set");
       if(within(cube.sensorY, cubepos[1], 10) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX){
         print("moving back to start")
         cubepos[0]-=dx;
-        
-      cube.moveTo({ x: cubepos[0], y: cubepos[1]}, 80, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel);
+        cube.moveTo({ x: cubepos[0], y: cubepos[1]}, 80, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel);
         timeLast = frameCount;
         
       }
       if((cubepos[0] < inflectionX) && within(cube.sensorX, cubepos[0], 25)){
-      
-      cubepos[1] += dy;
+        cubepos[1] += dy;
         print("moving y")
         print(cubepos);
-      cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
+        cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
         j+=1
         timeLast = frameCount;
         // sweeping = false;
@@ -256,15 +203,11 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cube){
   }
 }
   }
-  
-
 }
 
 function sweepMat2(dy, minArr, maxArr, lockoutT, cube1, cube2) {
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
-  
-  
   if (cube1 && cube2) {
     if(cube1.sensorY > maxArr[1] && j!=0 && (frameCount - timeLast)>lockoutT && cube2.sensorY > maxArr[3]){
       sweeping = false
@@ -301,8 +244,7 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cube1, cube2) {
       cube2.moveTo( {x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
         j+=1
         timeLast = frameCount;
-      }
-        
+        }
       }
       else if (j % 2 == 0) {
         if(within(cube1.sensorY, cubepos[1], 10) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX && within(cube2.sensorY, cubepos[3], 10) && cubepos[2] > inflectionX){
@@ -313,29 +255,25 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cube1, cube2) {
       cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, 80, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel);
         timeLast = frameCount; 
       }
-        if((cubepos[0] < inflectionX) && within(cube1.sensorX, cubepos[0], 25) && (cubepos[2] < inflectionX) && within(cube2.sensorX, cubepos[2], 25)
-){
-      
-        cubepos[1] += dy;
-        cubepos[3] += dy
+        if((cubepos[0] < inflectionX) && within(cube1.sensorX, cubepos[0], 25) && (cubepos[2] < inflectionX) && within(cube2.sensorX, cubepos[2], 25)){
+          cubepos[1] += dy;
+          cubepos[3] += dy
         print("moving y")
         print(cubepos);
-      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
-      cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
+        cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
+        cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
         j+=1
         timeLast = frameCount;
         // sweeping = false;
       }
       }
     }
-  
-}
+  }
 }
 
 function sweepMat3(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3) {
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
-  
   if (cube1 && cube2 && cube3) {
     if(cube1.sensorY > maxArr[1] && 
       j!=0 && 
@@ -392,8 +330,7 @@ function sweepMat3(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3) {
       cube3.moveTo( {x: cubepos[4], y: cubepos[5]}, 80, undefined, P5tCube.easeTypeId.decel )
         j+=1
         timeLast = frameCount;
-      }
-        
+       } 
       }
       else if (j % 2 == 0) {
         if(within(cube1.sensorY, cubepos[1], 10) && 
@@ -417,33 +354,28 @@ function sweepMat3(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3) {
         (cubepos[2] < inflectionX) && 
         within(cube2.sensorX, cubepos[2], 25) &&
         (cubepos[4] < inflectionX) &&
-        within(cube3.sensorX, cubepos[4], 25))
-{
-      
-        cubepos[1] += dy;
-        cubepos[3] += dy
-        cubepos[5] += dy
-        print("moving y")
-        print(cubepos);
-      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
-      cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
-      cube3.moveTo( { x: cubepos[4], y: cubepos[5]}, 80, undefined, P5tCube.easeTypeId.decel )
-        j+=1
-        timeLast = frameCount;
+        within(cube3.sensorX, cubepos[4], 25)){
+          cubepos[1] += dy;
+          cubepos[3] += dy
+          cubepos[5] += dy
+          print("moving y")
+          print(cubepos);
+          cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 80, undefined, P5tCube.easeTypeId.decel )
+          cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 80, undefined, P5tCube.easeTypeId.decel )
+          cube3.moveTo( { x: cubepos[4], y: cubepos[5]}, 80, undefined, P5tCube.easeTypeId.decel )
+          j+=1
+          timeLast = frameCount;
         // sweeping = false;
-      }
+        }
       }
     }
-  
-}
+  }
 }
 
 function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
   let inflectionX = maxArr[0] - 30
   let inflectionX2 = maxArr[4] - 30
   let dx = maxArr[0] - minArr[0]
-  
-  
   if (cube1 && cube2 && cube3 && cube4) {
     if(cube1.sensorY > maxArr[1] && 
       j!=0 && 
@@ -514,8 +446,7 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
       print(cube4.sensorX)
          j+=1;
         timeLast = frameCount;
-      }
-        
+        }
       }
       else if (j % 2 == 0) {
         if(within(cube1.sensorY, cubepos[1], 15) && 
@@ -545,9 +476,7 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
         (cubepos[4] < inflectionX2) &&
         within(cube3.sensorX, cubepos[4], 20) &&
         (cubepos[6] < inflectionX2) && 
-        within(cube4.sensorX, cubepos[6], 20))
-{
-      
+        within(cube4.sensorX, cubepos[6], 20)){
         cubepos[1] += dy;
         cubepos[3] += dy
         cubepos[5] += dy
@@ -565,8 +494,7 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
       }
       }
     }
-  
-}
+  }
 }
 function ourDist(x1, y1, x2, y2){
     return sqrt(sq(x2-x1) + sq(y2-y1));
@@ -576,9 +504,7 @@ function closest_cube(x, y) {
   let offsetX = (x+35)*2, offsetY = (y+20)*2;
   let vArr = [];
   for(var n = 0; n<gCubes.length; n++){
-      vArr.push(ourDist(gCubes[n].sensorX,gCubes[n].sensorY, offsetX, offsetY))
-
-      }
+      vArr.push(ourDist(gCubes[n].sensorX,gCubes[n].sensorY, offsetX, offsetY))}
     minimum = min(vArr);
     print(vArr)
     print(minimum)
@@ -590,8 +516,6 @@ function closest_cube(x, y) {
     }
     
   }
-
-
 
 function draw() {
 background(0)
@@ -609,14 +533,9 @@ image(img, 0, 0, 200, 200)
   }
     else if (gCubes.length==4) {
       sweepMat4(20, [75,75, 75,245, 245,75, 245, 245], [245, 245, 245, 400, 400, 245, 400,400], 30, gCubes[0], gCubes[1], gCubes[2], gCubes[3]);
-  }
+    }
   }
 drawCubes()
-
-  
-
-
-  
 }
 
 function moveCube(commoncube){
@@ -629,10 +548,7 @@ function moveCube(commoncube){
    else {
 commoncube.stop()
    }
-   
  }
-  
-  
 }
 
 function mouseClicked(){
