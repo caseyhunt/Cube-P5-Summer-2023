@@ -581,7 +581,7 @@ function closest_cube(x, y) {
   
     if (myStr.length > 0) {
       text(myStr, 10, height-20);
-      console.log(str)
+      console.log(myStr)
     }
   
     // changes button label based on connection status
