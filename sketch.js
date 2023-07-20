@@ -15,9 +15,43 @@ let cubepos = [];
 let timeLast = 0;
 let ourBool;
 let newCube
+
+// serial arduino code
+let port;
+let connectBtn;
+let serialConnected = true;
+
+// end
+
 function setup() {
   createCanvas(400, 400);
   img = loadImage("img.png")
+//serial code
+port = createSerial();
+
+  // in setup, we can open ports we have used previously
+  // without user interaction
+
+  let usedPorts = usedSerialPorts();
+  if (usedPorts.length > 0) {
+    port.open(usedPorts[0], 9600);
+  }
+
+  // any other ports can be opened via a dialog after
+  // user interaction (see connectBtnClick below)
+
+  connectBtn = createButton('Connect to Arduino');
+  connectBtn.position(80, 200);
+  connectBtn.mousePressed(connectBtnClick);
+
+  let sendBtn = createButton('motor up');
+  sendBtn.position(220, 200);
+  sendBtn.mousePressed(sendBtnClick);
+  let sendBtn2 = createButton('motor down');
+  sendBtn2.position(220, 225);
+  sendBtn2.mousePressed(sendBtnClick2);
+//end
+
   connectButton = createButton("connect cube")
   connectButton.mousePressed(ConnectCube)
   lightColor = createButton('light')
@@ -38,7 +72,28 @@ function setup() {
   sweepButton.mousePressed(sweep)
   useAnyCubeButton = createButton("anyCube")
   useAnyCubeButton.mousePressed(useAnyCube)
+
+
 }
+
+// serial functions
+function connectBtnClick() {
+  if (!port.opened()) {
+    // port.open('Arduino', 57600);
+    port.open();
+  } else {
+    port.close();
+  }
+}
+
+function sendBtnClick() {
+  port.write("<0>");
+}
+
+function sendBtnClick2() {
+  port.write("<1>");
+}
+//end
 
 function within (start, end, withinN) {
   if (abs(start-end) <withinN) {
@@ -517,9 +572,33 @@ function closest_cube(x, y) {
     
   }
 
+  function serialActivities(){
+    copy(0, 0, width, height, 0, -1, width, height);
+
+    // reads in complete lines and prints them at the
+    // bottom of the canvas
+    let myStr= port.readUntil("\n");
+  
+    if (myStr.length > 0) {
+      text(myStr, 10, height-20);
+      console.log(str)
+    }
+  
+    // changes button label based on connection status
+    if (!port.opened()) {
+      connectBtn.html('Connect to Arduino');
+      
+    } else {
+      connectBtn.html('Disconnect');
+      serialConnected = true;
+    }
+  }
+
 function draw() {
 background(0)
 image(img, 0, 0, 200, 200)
+
+
   if(sweeping == true){
     if (gCubes.length ==1) {
   sweepMat(20, [70,70], [420,420.5], 30, gCubes[0]);
@@ -536,6 +615,7 @@ image(img, 0, 0, 200, 200)
     }
   }
 drawCubes()
+serialActivities()
 }
 
 function moveCube(commoncube){
