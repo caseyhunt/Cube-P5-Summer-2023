@@ -16,6 +16,11 @@ let timeLast = 0;
 let ourBool;
 let newCube
 
+// rfid and positions array stuff
+let rfidPos = []
+
+
+
 // serial arduino code
 let port;
 let connectBtn;
@@ -572,6 +577,7 @@ function closest_cube(x, y) {
     
   }
 
+  
   function serialActivities(){
     copy(0, 0, width, height, 0, -1, width, height);
 
@@ -582,8 +588,9 @@ function closest_cube(x, y) {
     if (myStr.length > 0) {
       text(myStr, 10, height-20);
       console.log(myStr)
+      rfidTest(myStr);
     }
-  
+
     // changes button label based on connection status
     if (!port.opened()) {
       connectBtn.html('Connect to Arduino');
@@ -630,7 +637,26 @@ commoncube.stop()
    }
  }
 }
+function rfidTest(string) {
+  let cubeNum;
+  if (string.substring(0) == '{' && string.substring(-1) == '}') {
+    //position identification
+    cubeNum = string[1];
+    rfidString = string.substring(2, -1);
+    rfidString = rfidString.replace(" ", "")
+    // for (var i = 0; i< rfidPos.length; i++) {
+    //  if  (rfidPos[i][0] == rfidString) {
+    //   cubeNumReplace = string.substring(1,2); // we need to convert this to a int idk if it does that automatically
+    //   cubeNum = cubeNumReplace;
+    //     rfid[i][1] = gCubes[cubeNum].sensorX;
+    //     rfid[i][2] = gCubes[cubeNum].sensorY; 
+    //  }
+    // }
+    rfidPos.push([rfidString, gCubes[cubeNum].sensorX, gCubes[cubeNum].sensorY])
+    print(rfidPos)
+  }
 
+}
 function mouseClicked(){
   testX = mouseX;
   testY = mouseY;
