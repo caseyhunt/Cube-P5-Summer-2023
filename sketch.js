@@ -124,28 +124,28 @@ function drawCubes(){
   if (gCubes[0]) {
     stroke(cubeColor[0]);
     fill(cubeColor[0]);
-    square((gCubes[0].sensorX/2) -35, gCubes[0].sensorY/2 - 20, 10, 10)
+    square((gCubes[0].sensorX/2) -35, gCubes[0].sensorY/2 - 20, 10)
     pop();
     push();
 }  
 if (gCubes[1]) {
   stroke(cubeColor[1]);
   fill(cubeColor[1]);
-  square((gCubes[1].sensorX/2) -35, gCubes[1].sensorY/2 - 20, 10, 10)
+  square((gCubes[1].sensorX/2) -35, gCubes[1].sensorY/2 - 20, 10)
 }
   pop();
   push();
 if (gCubes[2]) {
   stroke(cubeColor[2]);
   fill(cubeColor[2]);
-  square((gCubes[2].sensorX/2) -35, gCubes[2].sensorY/2 - 20, 10, 10)
+  square((gCubes[2].sensorX/2) -35, gCubes[2].sensorY/2 - 20, 10)
 }
   pop();
   push()
 if (gCubes[3]) {
   stroke(cubeColor[3]);
   fill(cubeColor[3]);
-  square((gCubes[3].sensorX/2) -35, gCubes[3].sensorY/2 - 20, 10, 10)
+  square((gCubes[3].sensorX/2) -35, gCubes[3].sensorY/2 - 20, 10)
 }
  pop();
 }
@@ -588,7 +588,14 @@ function closest_cube(x, y) {
     if (myStr.length > 0) {
       text(myStr, 10, height-20);
       console.log(myStr)
-      rfidTest(myStr);
+    }
+    // if (myStr.substring(0) == '{' && myStr.substring(-1) == '}') {
+    //   print("yay working")
+    //   rfidTest(myStr);
+    // }
+    if (myStr[0] == "{") {
+      print("Yessuh")
+      rfidTest(myStr)
     }
 
     // changes button label based on connection status
@@ -602,6 +609,7 @@ function closest_cube(x, y) {
   }
 
 function draw() {
+noStroke()
 background(0)
 image(img, 0, 0, 200, 200)
 
@@ -623,7 +631,9 @@ image(img, 0, 0, 200, 200)
   }
 drawCubes()
 serialActivities()
+drawPieces()
 }
+
 
 function moveCube(commoncube){
    if (commoncube) {
@@ -639,24 +649,83 @@ commoncube.stop()
 }
 function rfidTest(string) {
   let cubeNum;
-  if (string.substring(0) == '{' && string.substring(-1) == '}') {
+  let run = 0;
+    print("Found rfid")
+    print(string)
     //position identification
     cubeNum = string[1];
-    rfidString = string.substring(2, -1);
-    rfidString = rfidString.replace(" ", "")
-    // for (var i = 0; i< rfidPos.length; i++) {
-    //  if  (rfidPos[i][0] == rfidString) {
-    //   cubeNumReplace = string.substring(1,2); // we need to convert this to a int idk if it does that automatically
-    //   cubeNum = cubeNumReplace;
-    //     rfid[i][1] = gCubes[cubeNum].sensorX;
-    //     rfid[i][2] = gCubes[cubeNum].sensorY; 
-    //  }
-    // }
-    rfidPos.push([rfidString, gCubes[cubeNum].sensorX, gCubes[cubeNum].sensorY])
-    print(rfidPos)
-  }
+    if (gCubes[0]) {
+      rfidString = string.substring(3, string.length-2)
+      print(rfidString)
+      rfidString = rfidString.replace(" ", "")
+      print(rfidString)
+      if (rfidPos.length == 0) {
+        rfidPos.push([rfidString, gCubes[0].sensorX, gCubes[0].sensorY])
+      }
+      else {
+      let rfid_found = false;
+      for (var i = 0; i< rfidPos.length; i++) {
+        if  (rfidPos[i][0] == rfidString) {
+           // we need to convert this to a int idk if it does that automatically
+         cubeNum = string.substring(1,2);
+           rfidPos[i][1] = gCubes[0].sensorX;
+           rfidPos[i][2] = gCubes[0].sensorY; 
+           rfid_found = true;
+           break 
+        }
+       }
+       if(rfid_found == false){
+         rfidPos.push([rfidString, gCubes[0].sensorX, gCubes[0].sensorY])
+         print("repeats")
+       }
+      }
+      
+      
+      print("rfid array: " + rfidPos)
+    }
+    else {
+      print("cube not connected");
+    }
+}
+
+function drawPieces(){
+  if (rfidPos.length >=1){
+    
+    for(var i = 0; i < rfidPos.length; i++) {
+      
+    stroke(255, 255, 255)
+    fill(255, 255, 255)
+    text(rfidPos[i][0], 300, 300)
+    stroke(255, 0, 0)
+    fill(255, 0, 0)
+    circle(rfidPos[i][1]/2 -35, rfidPos[i][2]/2 -20, 10)
+
+    /*drawing rfid pieces
+    //manual input of rfid assignments
+      let pieces = {:{name:"X"}, :{name:"O"}
+      {:{name:"X"}, 
+      :{name:"O"},
+      :{name:"X"},
+      :{name:"O"},
+      :{name:"X"},
+      :{name:"O"},
+      :{name:"X"},
+      :{name:"O"},
+    }
+
+if (pieces. .name == X){
 
 }
+else {
+  
+}
+
+    */ 
+  
+  }
+}
+}
+
 function mouseClicked(){
   testX = mouseX;
   testY = mouseY;
