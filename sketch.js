@@ -16,6 +16,18 @@ let timeLast = 0;
 let ourBool;
 let newCube
 
+let pieces = {"43bfee60":{"name":"X", "position": []}, 
+"738fee60":{"name":"O", "position": []},
+"339ded60":{"name":"X", "position": []}, 
+"23cfed60":{"name":"O", "position": []},
+"93e3ec60":{"name":"X", "position": []},
+"a3b4ec60":{"name":"O", "position": []},
+"e306ec60":{"name":"X", "position": []},
+"63d0eb60":{"name":"O", "position": []},
+"23d7ea60":{"name":"X", "position": []},
+"1316ea60":{"name":"O", "position": []},
+}
+
 // rfid and positions array stuff
 let rfidPos = []
 
@@ -33,6 +45,9 @@ function setup() {
   img = loadImage("img.png")
 //serial code
 port = createSerial();
+
+
+
 
   // in setup, we can open ports we have used previously
   // without user interaction
@@ -596,6 +611,7 @@ function closest_cube(x, y) {
     if (myStr[0] == "{") {
       print("Yessuh")
       rfidTest(myStr)
+      myStr = ""
     }
 
     // changes button label based on connection status
@@ -668,14 +684,14 @@ function rfidTest(string) {
         if  (rfidPos[i][0] == rfidString) {
            // we need to convert this to a int idk if it does that automatically
          cubeNum = string.substring(1,2);
-           rfidPos[i][1] = gCubes[0].sensorX;
-           rfidPos[i][2] = gCubes[0].sensorY; 
+           rfidPos[i][1] = gCubes[0].sensorX/2 -35;
+           rfidPos[i][2] = gCubes[0].sensorY/2 -20; 
            rfid_found = true;
            break 
         }
        }
        if(rfid_found == false){
-         rfidPos.push([rfidString, gCubes[0].sensorX, gCubes[0].sensorY])
+         rfidPos.push([rfidString, gCubes[0].sensorX/2 -35, gCubes[0].sensorY/2 -20])
          print("repeats")
        }
       }
@@ -690,37 +706,27 @@ function rfidTest(string) {
 
 function drawPieces(){
   if (rfidPos.length >=1){
-    
+    let space = 0;
     for(var i = 0; i < rfidPos.length; i++) {
-      
     stroke(255, 255, 255)
     fill(255, 255, 255)
-    text(rfidPos[i][0], 300, 300)
+    text(rfidPos[i][0], 300, 300 +space)
     stroke(255, 0, 0)
     fill(255, 0, 0)
-    circle(rfidPos[i][1]/2 -35, rfidPos[i][2]/2 -20, 10)
-
-    /*drawing rfid pieces
-    //manual input of rfid assignments
-      let pieces = {:{name:"X"}, :{name:"O"}
-      {:{name:"X"}, 
-      :{name:"O"},
-      :{name:"X"},
-      :{name:"O"},
-      :{name:"X"},
-      :{name:"O"},
-      :{name:"X"},
-      :{name:"O"},
-    }
-
-if (pieces. .name == X){
-
+    circle(rfidPos[i][1], rfidPos[i][2], 10)
+    space +=20
+// pieces
+let arrRfid = Object.keys(pieces);
+arrRfid.forEach((piece) => {
+if (pieces[piece].name == "X"){
+//textSize(50)
+//text("X", pieces[piece].position[0], pieces[piece].position[1]);
 }
 else {
-  
+//textSize(50)
+//text("O", pieces[piece].position[0], pieces[piece].position[1]);
 }
-
-    */ 
+})
   
   }
 }
