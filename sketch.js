@@ -127,13 +127,13 @@ function within (start, end, withinN) {
 function useAnyCube() {
   ourBool = true
 }
-
+//general sweep function
 function sweep() {
   sweeping = true;
   j=0;
   print("sweeping!");  
   }     
-
+//The intial function to draw and select cubes
 function drawCubes(){
   push();
   if (gCubes[0]) {
@@ -223,7 +223,7 @@ function randomColor(){
 //minArr = [minX, minY]
 //lockoutT = how many frames before the next command? (i.e. 30)
 //this function always sweeps top to bottom, left to right.
-
+//Moves the robot across and down the entire board to scan rfid tags
 function sweepMat(dy, minArr, maxArr, lockoutT, cube){
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
@@ -279,7 +279,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cube){
 }
   }
 }
-
+//does the sweep with two cubes
 function sweepMat2(dy, minArr, maxArr, lockoutT, cube1, cube2) {
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
@@ -346,6 +346,7 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cube1, cube2) {
   }
 }
 
+//does the sweep with 3 cubes
 function sweepMat3(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3) {
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
@@ -447,6 +448,7 @@ function sweepMat3(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3) {
   }
 }
 
+//does the sweep with four cubes
 function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
   let inflectionX = maxArr[0] - 30
   let inflectionX2 = maxArr[4] - 30
@@ -574,6 +576,7 @@ function sweepMat4(dy, minArr, maxArr, lockoutT, cube1, cube2, cube3, cube4) {
 function ourDist(x1, y1, x2, y2){
     return sqrt(sq(x2-x1) + sq(y2-y1));
 }
+//finds the closest cube to a given position
 function closest_cube(x, y) {
   let minimum
   let offsetX = (x+35)*2, offsetY = (y+20)*2;
@@ -623,7 +626,7 @@ function closest_cube(x, y) {
       serialConnected = true;
     }
   }
-
+//main
 function draw() {
 noStroke()
 background(0)
@@ -650,12 +653,12 @@ serialActivities()
 drawPieces()
 }
 
-
+//moves cube to a position and puts a square at that position
 function moveCube(commoncube){
    if (commoncube) {
    if (mouseX < 200 && mouseY < 200) {
       commoncube.moveTo( { x: (mouseX+35) *2, y: (mouseY+20)*2}, 80, undefined, P5tCube.easeTypeId.decel )
-     square((commoncube.sensorX/2) -35, commoncube.sensorY/2 - 20, 10, 10)
+     square((commoncube.sensorX/2) -35, commoncube.sensorY/2 - 20, 10)
      text(commoncube, commoncube.sensorX, commoncube.sensorY)
     }
    else {
@@ -663,6 +666,8 @@ commoncube.stop()
    }
  }
 }
+
+//sees if there is an rfid at the position the cube is at
 function rfidTest(string) {
   let cubeNum;
   let run = 0;
@@ -670,11 +675,16 @@ function rfidTest(string) {
     print(string)
     //position identification
     cubeNum = string[1];
+    //if the cubes is connected, start parsing the string
     if (gCubes[0]) {
       rfidString = string.substring(3, string.length-2)
       print(rfidString)
       rfidString = rfidString.replace(" ", "")
       print(rfidString)
+      
+      //if we don't have any rfid tags, then push the one we have; if we do
+      //then we need to see if it is equal to a previous one, and update
+      //the position
       if (rfidPos.length == 0) {
         rfidPos.push([rfidString, gCubes[0].sensorX, gCubes[0].sensorY])
       }
@@ -704,6 +714,7 @@ function rfidTest(string) {
     }
 }
 
+//draws the board game pieces
 function drawPieces(){
   if (rfidPos.length >=1){
     let space = 0;
@@ -732,6 +743,7 @@ else {
 }
 }
 
+//moves the closest cube to the positon pressed on the screen
 function mouseClicked(){
   testX = mouseX;
   testY = mouseY;
