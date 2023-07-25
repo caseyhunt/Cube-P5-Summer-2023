@@ -117,10 +117,10 @@ port = createSerial();
   useAnyCubeButton = createButton("anyCube")
   useAnyCubeButton.mousePressed(useAnyCube)
 
-  port.write("<0, 0>");
-  port.write("<1, 0>");
-  port.write("<2, 0>");
-  port.write("<3, 0>");
+  port.write("<0,0>");
+  port.write("<1,0>");
+  port.write("<2,0>");
+  port.write("<3,0>");
 }
 
 // serial functions
@@ -144,44 +144,44 @@ function sendBtnClick2() {
 
 function magnet1(){
   if(magnet1up == false){
-    port.write("<0, 0>");
+    port.write("<0,0>");
     magnet1up = true;
   }
   else {
-    port.write("<0, 1>");
+    port.write("<0,1>");
     magnet1up = false
   }
 }
 
 function magnet2(){
   if(magnet2up == false){
-    port.write("<1, 0>");
+    port.write("<1,0>");
     magnet2up = true;
   }
   else {
-    port.write("<1, 1>");
+    port.write("<1,1>");
     magnet2up = false
   }
 }
 
 function magnet3(){
   if(mat3netup == false){
-    port.write("<2, 0>");
+    port.write("<2,0>");
     magnet3up = true;
   }
   else {
-    port.write("<2, 1>");
+    port.write("<2,1>");
     magnet3up = false
   }
 }
 
 function magnet4(){
   if(magnet4up == false){
-    port.write("<3, 0>");
+    port.write("<3,0>");
     magnet4up = true;
   }
   else {
-    port.write("<3, 1>");
+    port.write("<3,1>");
     magnet4up = false
   }
 }
