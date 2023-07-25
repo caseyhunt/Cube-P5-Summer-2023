@@ -15,6 +15,11 @@ let cubepos = [];
 let timeLast = 0;
 let ourBool;
 let newCube
+let magnet1Button
+let magnet2Button
+let magnet3Button
+let magnet4Button
+let magnwt4up = true, magnet3up = true, magnet2up = true, magnet1up = true;
 
 let pieces = {"43bfee60":{"name":"X", "position": []}, 
 "738fee60":{"name":"O", "position": []},
@@ -70,6 +75,25 @@ port = createSerial();
   let sendBtn2 = createButton('motor down');
   sendBtn2.position(220, 225);
   sendBtn2.mousePressed(sendBtnClick2);
+
+  magnet1Button = createButton('Magnet 1')
+  magnet1Button.position(0, 300)
+  magnet1Button.mousePressed(magnet1)
+
+
+  magnet2Button = createButton('Magnet 2')
+  magnet2Button.position(50, 300)
+  magnet2Button.mousePressed(magnet2)
+  
+  magnet3Button = createButton('Magnet 3')
+  magnet3Button.position(100, 300)
+  magnet3Button.mousePressed(magnet3)
+
+  magnet4Button = createButton('Magnet 4')
+  magnet4Button.position(150, 300)
+  magnet4Button.mousePressed(magnet4)
+
+
 //end
 
   connectButton = createButton("connect cube")
@@ -93,7 +117,10 @@ port = createSerial();
   useAnyCubeButton = createButton("anyCube")
   useAnyCubeButton.mousePressed(useAnyCube)
 
-
+  port.write("<0, 0>");
+  port.write("<1, 0>");
+  port.write("<2, 0>");
+  port.write("<3, 0>");
 }
 
 // serial functions
@@ -114,6 +141,50 @@ function sendBtnClick2() {
   port.write("<1>");
 }
 //end
+
+function magnet1(){
+  if(magnet1up == false){
+    port.write("<0, 0>");
+    magnet1up = true;
+  }
+  else {
+    port.write("<0, 1>");
+    magnet1up = false
+  }
+}
+
+function magnet2(){
+  if(magnet2up == false){
+    port.write("<1, 0>");
+    magnet2up = true;
+  }
+  else {
+    port.write("<1, 1>");
+    magnet2up = false
+  }
+}
+
+function magnet3(){
+  if(mat3netup == false){
+    port.write("<2, 0>");
+    magnet3up = true;
+  }
+  else {
+    port.write("<2, 1>");
+    magnet3up = false
+  }
+}
+
+function magnet4(){
+  if(magnet4up == false){
+    port.write("<3, 0>");
+    magnet4up = true;
+  }
+  else {
+    port.write("<3, 1>");
+    magnet4up = false
+  }
+}
 
 function within (start, end, withinN) {
   if (abs(start-end) <withinN) {
