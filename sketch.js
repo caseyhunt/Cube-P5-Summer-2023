@@ -15,11 +15,7 @@ let cubepos = [];
 let timeLast = 0;
 let ourBool;
 let newCube
-let magnet1Button
-let magnet2Button
-let magnet3Button
-let magnet4Button
-let magnwt4up = true, magnet3up = true, magnet2up = true, magnet1up = true;
+let magnet1ButtonUp, magnet1ButtonDown, magnet2ButtonUp, magnet2ButtonDown, magnet3ButtonUp, magnet3ButtonDown;
 
 let pieces = {"43bfee60":{"name":"X", "position": []}, 
 "738fee60":{"name":"O", "position": []},
@@ -76,22 +72,28 @@ port = createSerial();
   sendBtn2.position(220, 225);
   sendBtn2.mousePressed(sendBtnClick2);
 
-  magnet1Button = createButton('Magnet 1')
-  magnet1Button.position(0, 300)
-  magnet1Button.mousePressed(magnet1)
+  magnet1ButtonUp = createButton('Magnet 1 up')
+  magnet1ButtonUp.position(0, 300)
+  magnet1ButtonUp.mousePressed(magnet1Up)
+  magnet1ButtonDown = createButton('Magnet 1 down')
+  magnet1ButtonDown.position(0, 350)
+  magnet1ButtonDown.mousePressed(magnet1Down)
 
 
-  magnet2Button = createButton('Magnet 2')
-  magnet2Button.position(50, 300)
-  magnet2Button.mousePressed(magnet2)
+  magnet2ButtonUp = createButton('Magnet 2 up')
+  magnet2ButtonUp.position(100, 300)
+  magnet2ButtonUp.mousePressed(magnet2Up)
+  magnet2ButtonDown = createButton('Magnet 2 down')
+  magnet2ButtonDown.position(100, 350)
+  magnet2ButtonDown.mousePressed(magnet2Down)
   
-  magnet3Button = createButton('Magnet 3')
-  magnet3Button.position(100, 300)
-  magnet3Button.mousePressed(magnet3)
+  magnet3ButtonUp = createButton('Magnet 3 up')
+  magnet3ButtonUp.position(200, 300)
+  magnet3ButtonUp.mousePressed(magnet3Up)
+  magnet3ButtonDown = createButton('Magnet 3 down')
+  magnet3ButtonDown.position(200, 350)
+  magnet3ButtonDown.mousePressed(magnet3Down)
 
-  magnet4Button = createButton('Magnet 4')
-  magnet4Button.position(150, 300)
-  magnet4Button.mousePressed(magnet4)
 
 
 //end
@@ -116,11 +118,6 @@ port = createSerial();
   sweepButton.mousePressed(sweep)
   useAnyCubeButton = createButton("anyCube")
   useAnyCubeButton.mousePressed(useAnyCube)
-
-  port.write("<0,0>");
-  port.write("<1,0>");
-  port.write("<2,0>");
-  port.write("<3,0>");
 }
 
 // serial functions
@@ -142,49 +139,38 @@ function sendBtnClick2() {
 }
 //end
 
-function magnet1(){
-  if(magnet1up == false){
-    port.write("<0,0>");
-    magnet1up = true;
-  }
-  else {
+function magnet1Up(){
+  print("Magnet 1 Up")
     port.write("<0,1>");
-    magnet1up = false
   }
-}
 
-function magnet2(){
-  if(magnet2up == false){
-    port.write("<1,0>");
-    magnet2up = true;
+  function magnet1Down(){
+    print("Magnet 1 down")
+    port.write("<0,0>");
   }
-  else {
+
+  function magnet2Up(){
+    print("Magnet 2 Up")
     port.write("<1,1>");
-    magnet2up = false
   }
-}
 
-function magnet3(){
-  if(mat3netup == false){
-    port.write("<2,0>");
-    magnet3up = true;
+  function magnet2Down(){
+    print("Magnet 2 down")
+    port.write("<1,0>");
   }
-  else {
+
+  function magnet3Up(){
     port.write("<2,1>");
-    magnet3up = false
   }
-}
 
-function magnet4(){
-  if(magnet4up == false){
-    port.write("<3,0>");
-    magnet4up = true;
+  function magnet3Down(){
+    port.write("<2,0>");
   }
-  else {
-    port.write("<3,1>");
-    magnet4up = false
-  }
-}
+ 
+
+
+
+
 
 function within (start, end, withinN) {
   if (abs(start-end) <withinN) {
@@ -351,7 +337,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
   }
 }
 //does the sweep with two cubes
-function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube1, cube2) {
+function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, xSpeed, ySpeed, cube1, cube2) {
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
   if (cube1 && cube2) {
@@ -378,27 +364,27 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube1, cube2) {
         print("gone to step two")
         cubepos[0]+=dx;
         cubepos[2] += dx;
-        cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
-        cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+        cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+        cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
         timeLast = frameCount;
       }
         if((cubepos[0] > inflectionX) && within(cube1.sensorX, cubepos[0], 15) && (frameCount - timeLast)>lockoutT && (cubepos[2] > inflectionX) && within(cube2.sensorX, cubepos[2], 15)){
       print("moving y right")
       cubepos[1] += dy;
       cubepos[3] += dy;
-      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
-      cube2.moveTo( {x: cubepos[2], y: cubepos[3]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+      cube2.moveTo( {x: cubepos[2], y: cubepos[3]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
         timeLast = frameCount;
         }
       }
       else if (j % 2 == 0) {
-        if(within(cube1.sensorY, cubepos[1], 10) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX && within(cube2.sensorY, cubepos[3], 10) && cubepos[2] > inflectionX){
+        if(within(cube1.sensorY, cubepos[1], 25) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX && within(cube2.sensorY, cubepos[3], 25) && cubepos[2] > inflectionX){
         print("moving back to start")
         cubepos[0]-=dx;
         cubepos[2] -= dx
-      cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
-      cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+      cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+      cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
         timeLast = frameCount; 
       }
         if((cubepos[0] < inflectionX) && within(cube1.sensorX, cubepos[0], 25) && (cubepos[2] < inflectionX) && within(cube2.sensorX, cubepos[2], 25)){
@@ -406,8 +392,8 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube1, cube2) {
           cubepos[3] += dy
         print("moving y")
         //print(cubepos);
-        cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
-        cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+        cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+        cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
         timeLast = frameCount;
         // sweeping = false;
@@ -709,7 +695,7 @@ image(img, 0, 0, 200, 200)
   sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
     }
     else if (gCubes.length==2) {
-  sweepMat2(20, [110,90, 110, 230], [380, 230,380, 400], 30, 25, gCubes[0], gCubes[1]);
+  sweepMat2(20, [110,90, 110, 230], [380, 230,380, 400], 30, 25, 80, 40, gCubes[0], gCubes[1]);
       
     }
     else if (gCubes.length==3) {
