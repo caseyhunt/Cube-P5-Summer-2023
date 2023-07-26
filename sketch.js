@@ -330,7 +330,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
     }
     else if(j%2 == 0){   
       print("second set");
-      if(within(cube.sensorY, cubepos[1], 10) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX){
+      if(within(cube.sensorY, cubepos[1], 20) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX){
         print("moving back to start")
         cubepos[0]-=dx;
         cube.moveTo({ x: cubepos[0], y: cubepos[1]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
@@ -351,7 +351,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
   }
 }
 //does the sweep with two cubes
-function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime ,cube1, cube2) {
+function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube1, cube2) {
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
   if (cube1 && cube2) {
@@ -363,31 +363,31 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime ,cube1, cube2) {
     else {
       if(j == 0 && (frameCount - timeLast) > lockoutT){
       cubepos = minArr;
-      print(cubepos)
-      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 60, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel, cubeWaitTime )
-      cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 60, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel, cubeWaitTime )
+      //print(cubepos)
+      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel, cubeWaitTime )
+      cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 50, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel, cubeWaitTime )
       j+=1
       timeLast = frameCount;
       print("gone to start")
     }
       else if (j%2 ==1) {
-        print(cubepos)
-        print(j)
+        //print(cubepos)
+        //print(j)
         if(within(cube1.sensorX, cubepos[0], 20) && within(cube1.sensorY, cubepos[1], 20) && (frameCount - timeLast)>lockoutT && cubepos[0]<inflectionX && within(cube2.sensorX, cubepos[2], 20) && within(cube2.sensorY, cubepos[3], 20) && cubepos[2]<inflectionX){
         // print("moving x right")
         print("gone to step two")
         cubepos[0]+=dx;
         cubepos[2] += dx;
-        cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, 60, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
-        cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, 60, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+        cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+        cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
         timeLast = frameCount;
       }
         if((cubepos[0] > inflectionX) && within(cube1.sensorX, cubepos[0], 15) && (frameCount - timeLast)>lockoutT && (cubepos[2] > inflectionX) && within(cube2.sensorX, cubepos[2], 15)){
       print("moving y right")
       cubepos[1] += dy;
       cubepos[3] += dy;
-      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 60, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
-      cube2.moveTo( {x: cubepos[2], y: cubepos[3]}, 60, undefined, P5tCube.easeTypeId.decel, cubeWaitTime)
+      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+      cube2.moveTo( {x: cubepos[2], y: cubepos[3]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
         timeLast = frameCount;
         }
@@ -397,17 +397,17 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime ,cube1, cube2) {
         print("moving back to start")
         cubepos[0]-=dx;
         cubepos[2] -= dx
-      cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, 60, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
-      cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, 60, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+      cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+      cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, 50, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
         timeLast = frameCount; 
       }
         if((cubepos[0] < inflectionX) && within(cube1.sensorX, cubepos[0], 25) && (cubepos[2] < inflectionX) && within(cube2.sensorX, cubepos[2], 25)){
           cubepos[1] += dy;
           cubepos[3] += dy
         print("moving y")
-        print(cubepos);
-        cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 60, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
-        cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 60, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+        //print(cubepos);
+        cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+        cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
         timeLast = frameCount;
         // sweeping = false;
@@ -434,7 +434,7 @@ function sweepMat3(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube1, cube2, cub
     else {
       if(j == 0 && (frameCount - timeLast) > lockoutT){
       cubepos = minArr;
-      print(cubepos)
+      //print(cubepos)
       cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel, cubeWaitTime )
       cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 50, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel, cubeWaitTime )
       cube3.moveTo( { x: cubepos[4], y: cubepos[5]}, 50, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel, cubeWaitTime )
@@ -472,7 +472,7 @@ function sweepMat3(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube1, cube2, cub
       cubepos[1] += dy;
       cubepos[3] += dy;
       cubepos[5] += dy;
-      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.dece, cubeWaitTimel )
+      cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.dece, cubeWaitTime )
       cube2.moveTo( {x: cubepos[2], y: cubepos[3]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
       cube3.moveTo( {x: cubepos[4], y: cubepos[5]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
@@ -506,7 +506,7 @@ function sweepMat3(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube1, cube2, cub
           cubepos[3] += dy
           cubepos[5] += dy
           print("moving y")
-          print(cubepos);
+          //print(cubepos);
           cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
           cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
           cube3.moveTo( { x: cubepos[4], y: cubepos[5]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
@@ -706,14 +706,14 @@ image(img, 0, 0, 200, 200)
 
   if(sweeping == true){
     if (gCubes.length ==1) {
-  sweepMat(20, [90,70], [400,420.5], 30, 15, gCubes[0]);
+  sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
     }
     else if (gCubes.length==2) {
-  sweepMat2(20, [90,70, 90, 230], [400, 200,400, 420.5], 30, 15, gCubes[0], gCubes[1]);
+  sweepMat2(20, [110,90, 110, 230], [380, 230,380, 400], 30, 25, gCubes[0], gCubes[1]);
       
     }
     else if (gCubes.length==3) {
-    sweepMat3(20, [90,70, 90, 210, 90, 350], [400, 210, 400, 350, 400, 420], 30, 15, gCubes[0], gCubes[1], gCubes[2]);
+    sweepMat3(20, [110,70, 110, 210, 110, 350], [400, 210, 400, 350, 400, 420], 30, 15, gCubes[0], gCubes[1], gCubes[2]);
   }
     else if (gCubes.length==4) {
       sweepMat4(20, [95,75, 95,245, 245,75, 245, 245], [245, 245, 245, 400, 400, 245, 400,400], 30, 15, gCubes[0], gCubes[1], gCubes[2], gCubes[3]);
@@ -747,7 +747,7 @@ function rfidTest(string) {
     //position identification
     cubeNum = string[1];
     //if the cubes is connected, start parsing the string
-    if (gCubes[0]) {
+    if (gCubes[cubeNum]) {
       rfidString = string.substring(3, string.length-2)
       print(rfidString)
       rfidString = rfidString.replace(" ", "")
@@ -757,7 +757,7 @@ function rfidTest(string) {
       //then we need to see if it is equal to a previous one, and update
       //the position
       if (rfidPos.length == 0) {
-        rfidPos.push([rfidString, gCubes[0].sensorX, gCubes[0].sensorY])
+        rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20])
       }
       else {
       let rfid_found = false;
@@ -765,14 +765,14 @@ function rfidTest(string) {
         if  (rfidPos[i][0] == rfidString) {
            // we need to convert this to a int idk if it does that automatically
          cubeNum = string.substring(1,2);
-           rfidPos[i][1] = gCubes[0].sensorX/2 -35;
-           rfidPos[i][2] = gCubes[0].sensorY/2 -20; 
+           rfidPos[i][1] = gCubes[cubeNum].sensorX/2 -35;
+           rfidPos[i][2] = gCubes[cubeNum].sensorY/2 -20; 
            rfid_found = true;
            break 
         }
        }
        if(rfid_found == false){
-         rfidPos.push([rfidString, gCubes[0].sensorX/2 -35, gCubes[0].sensorY/2 -20])
+         rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20])
          print("repeats")
        }
       }
