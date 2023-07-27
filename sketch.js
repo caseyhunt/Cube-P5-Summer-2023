@@ -823,7 +823,10 @@ function drawPieces(){
     for(var i = 0; i < rfidPos.length; i++) {
     stroke(255, 255, 255)
     fill(255, 255, 255)
-    text(rfidPos[i][0], 300, 300 +space)
+    //draws Xs or Os
+    text(pieces[rfidPos[i][0]]["name"], rfidPos[i][1], rfidPos[i][2]);
+    circle(rfidPos[i][1], rfidPos[i][2], 10)
+    //
     stroke(255, 0, 0)
     fill(255, 0, 0)
     print("drawing circle")
