@@ -743,7 +743,7 @@ drawPieces()
 function moveCube(commoncube){
    if (commoncube) {
    if (mouseX < 200 && mouseY < 200) {
-      commoncube.moveTo( { x: (mouseX+35) *2, y: (mouseY+20)*2}, 80, undefined, P5tCube.easeTypeId.decel )
+      commoncube.moveTo( { x: (mouseX+35) *2, y: (mouseY+20)*2}, 50, undefined, P5tCube.easeTypeId.decel )
      square((commoncube.sensorX/2) -35, commoncube.sensorY/2 - 20, 10)
      text(commoncube, commoncube.sensorX, commoncube.sensorY)
     }
