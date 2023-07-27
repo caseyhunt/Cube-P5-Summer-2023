@@ -646,6 +646,9 @@ function closest_cube(x, y) {
     for(var i = 0; i<vArr.length; i++){
       print(i)
       if(vArr[i] == minimum){
+        if(vArr[i] == vArr[i+1]){
+          return gCubes[0];
+        }
         return gCubes[i];
       }
     }
