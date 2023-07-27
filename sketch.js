@@ -641,6 +641,9 @@ function closest_cube(x, y) {
     for(var i = 0; i<vArr.length; i++){
       print(i)
       if(vArr[i] == minimum){
+        if(vArr[i] == vArr[i+1]){
+          return gCubes[0];
+        }
         return gCubes[i];
       }
     }
@@ -705,7 +708,7 @@ image(img, 0, 0, 200, 200)
   sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
     }
     else if (gCubes.length==2) {
-  sweepMat2(20, [110,90, 110, 230], [380, 230,380, 400], 30, 25, 80, 40, gCubes[0], gCubes[1]);
+  sweepMat2(20, [110,90, 110, 230], [380, 200,380, 400], 30, 25, 80, 40, gCubes[0], gCubes[1]);
       
     }
     else if (gCubes.length==3) {
@@ -716,6 +719,7 @@ image(img, 0, 0, 200, 200)
     }
   }
 drawCubes()
+removeRfid()
 serialActivities()
 drawPieces()
 }
@@ -753,7 +757,7 @@ function rfidTest(string) {
       //then we need to see if it is equal to a previous one, and update
       //the position
       if (rfidPos.length == 0) {
-        rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20])
+        rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20, frameCount])
       }
       else {
       let rfid_found = false;
@@ -763,22 +767,12 @@ function rfidTest(string) {
            rfidPos[i][1] = gCubes[cubeNum].sensorX/2 -35;
            rfidPos[i][2] = gCubes[cubeNum].sensorY/2 -20; 
            rfid_found = true;
+           
            break 
            
         }
        }
-
- /*to tie the rfidString to the actual object created so we can identify it and give it position
-        let arrRfidIdentity = Object.keys(pieces);
-      arrRfidIdentity.forEach((piece) => {
-      if (pieces[piece] == rfidString){
-        pieces[piece].position[0] = 0
-        pieces[piece].position[1] = 0
-      }
-    })
-    */
-
-       if(rfid_found == false){ 
+       if(rfid_found == false){
          rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20])
          print("repeats")
        }
@@ -788,6 +782,23 @@ function rfidTest(string) {
     else {
       print("cube not connected");
     }
+}
+//function sees if there is a cube at a position where 
+//an rfid was previously found and removes the marker if no rfid is there
+function removeRfid(){
+  for(var i = 0;i<rfidPos.length;i++) {
+    //for (var n = 0; n <gCubes.length; n++){    
+    if (within(gCubes[0].sensorX/2 -35, rfidPos[i][1], 5) && within(gCubes[0].sensorY/2 -20, rfidPos[i][2], 5) || within(gCubes[1].sensorX/2 -35, rfidPos[i][1], 5) && within(gCubes[1].sensorY/2 -20, rfidPos[i][2], 5) ){
+      print("within last check")
+      print(rfidPos[i][3], frameCount)
+      if(!within(rfidPos[i][3], frameCount, 50)){
+        print("deleting circle"); 
+          rfidPos.pop(i); 
+      }
+                    
+     }
+    // }
+  }
 }
 
 //draws the board game pieces
@@ -800,6 +811,7 @@ function drawPieces(){
     text(rfidPos[i][0], 300, 300 +space)
     stroke(255, 0, 0)
     fill(255, 0, 0)
+    print("drawing circle")
     circle(rfidPos[i][1], rfidPos[i][2], 10)
     space +=20
 // pieces
