@@ -17,16 +17,16 @@ let ourBool;
 let newCube
 let magnet1ButtonUp, magnet1ButtonDown, magnet2ButtonUp, magnet2ButtonDown, magnet3ButtonUp, magnet3ButtonDown;
 
-let pieces = {"43 bf ee 60":{"name":"X", "position": []}, 
-"73 8f ee 60":{"name":"O", "position": []},
-"33 9d ed 60":{"name":"X", "position": []}, 
-"23 cf ed 60":{"name":"O", "position": []},
-"93 e3 ec 60":{"name":"X", "position": []},
-"a3 b4 ec 60":{"name":"O", "position": []},
-"e3 06 ec 60":{"name":"X", "position": []},
-"63 d0 eb 60":{"name":"O", "position": []},
-"23 d7 ea 60":{"name":"X", "position": []},
-"13 16 ea 60":{"name":"O", "position": []},
+let pieces = {"43 bf ee 60":{"name":"X", "position": [], "rfid":"43 bf ee 60"}, 
+"73 8f ee 60":{"name":"O", "position": [], "rfid":"73 8f ee 60"},
+"33 9d ed 60":{"name":"X", "position": [], "rfid":"33 9d ed 60"}, 
+"23 cf ed 60":{"name":"O", "position": [], "rfid":"23 cf ed 60"},
+"93 e3 ec 60":{"name":"X", "position": [], "rfid":"93 e3 ec 60"},
+"a3 b4 ec 60":{"name":"O", "position": [], "rfid":"a3 b4 ec 60"},
+"e3 06 ec 60":{"name":"X", "position": [], "rfid":"e3 06 ec 60"},
+"63 d0 eb 60":{"name":"O", "position": [], "rfid":"63 d0 eb 60"},
+"23 d7 ea 60":{"name":"X", "position": [], "rfid":"23 d7 ea 60"},
+"13 16 ea 60":{"name":"O", "position": [], "rfid":"13 16 ea 60"},
 }
 
 // rfid and positions array stuff
@@ -826,29 +826,34 @@ function drawPieces(){
     for(var i = 0; i < rfidPos.length; i++) {
     stroke(255, 255, 255)
     fill(255, 255, 255)
-    /*raws Xs or Os
+    //raws Xs or Os
+    textSize(50)
+    if(pieces[rfidPos[i][0]]){
     text(pieces[rfidPos[i][0]]["name"], rfidPos[i][1], rfidPos[i][2]);
+    }else{
+      print("your tag is not in the pieces object")
+    }
     circle(rfidPos[i][1], rfidPos[i][2], 10)
-    */
+    
 
-arrRfid.forEach((piece) => {
-  print(pieces[piece].name)
-if (pieces.rfidPos[i][0] == rfidString){
-  if (pieces[piece].name == "X"){
-    print("found X piece");
-textSize(50)
-text("X", rfidPos[i][1], rfidPos[i][2]);
-  }
-}
-else {
-textSize(50)
-text("O", rfidPos[i][1], rfidPos[i][2]);
-}
-})
+// arrRfid.forEach((piece) => {
+//   print(pieces[piece].name)
+// if (pieces[piece].rfid == rfidString){
+//   if (pieces[piece].name == "X"){
+//     print("found X piece");
+// textSize(50)
+// text("X", rfidPos[i][1], rfidPos[i][2]);
+//   }
+// }
+// else {
+// textSize(50)
+// text("O", rfidPos[i][1], rfidPos[i][2]);
+// }
+// })
     stroke(255, 0, 0)
     fill(255, 0, 0)
     
-    circle(rfidPos[i][1], rfidPos[i][2], 10)
+    //circle(rfidPos[i][1], rfidPos[i][2], 10)
     space +=20
 // pieces
   }
