@@ -362,18 +362,26 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, xSpeed, ySpeed, c
         if(within(cube1.sensorX, cubepos[0], 20) && within(cube1.sensorY, cubepos[1], 20) && (frameCount - timeLast)>lockoutT && cubepos[0]<inflectionX && within(cube2.sensorX, cubepos[2], 20) && within(cube2.sensorY, cubepos[3], 20) && cubepos[2]<inflectionX){
         // print("moving x right")
         print("gone to step two")
+          if(cube1.sensorY < maxArr[1]){
         cubepos[0]+=dx;
-        cubepos[2] += dx;
         cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+         }
+          if(cube2.sensorY < maxArr[3]){        
+        cubepos[2] += dx;
         cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+         }
         timeLast = frameCount;
       }
         if((cubepos[0] > inflectionX) && within(cube1.sensorX, cubepos[0], 15) && (frameCount - timeLast)>lockoutT && (cubepos[2] > inflectionX) && within(cube2.sensorX, cubepos[2], 15)){
       print("moving y right")
+      if(cube1.sensorY < maxArr[1]){
       cubepos[1] += dy;
-      cubepos[3] += dy;
       cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+      }
+      if(cube2.sensorY < maxArr[3]){
+      cubepos[3] += dy;
       cube2.moveTo( {x: cubepos[2], y: cubepos[3]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+      }
         j+=1
         timeLast = frameCount;
         }
@@ -381,19 +389,27 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, xSpeed, ySpeed, c
       else if (j % 2 == 0) {
         if(within(cube1.sensorY, cubepos[1], 25) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX && within(cube2.sensorY, cubepos[3], 25) && cubepos[2] > inflectionX){
         print("moving back to start")
+          if(cube1.sensorY < maxArr[1]){
         cubepos[0]-=dx;
-        cubepos[2] -= dx
-      cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
-      cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+        cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+         }
+          if(cube2.sensorY < maxArr[3]){
+        cubepos[2] -= dx;
+        cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+         }
         timeLast = frameCount; 
       }
         if((cubepos[0] < inflectionX) && within(cube1.sensorX, cubepos[0], 25) && (cubepos[2] < inflectionX) && within(cube2.sensorX, cubepos[2], 25)){
+          if(cube1.sensorY < maxArr[1]){
           cubepos[1] += dy;
+          cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+          }
+          if(cube2.sensorY < maxArr[3]){
           cubepos[3] += dy
+          cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+          }
         print("moving y")
         //print(cubepos);
-        cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
-        cube2.moveTo( { x: cubepos[2], y: cubepos[3]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
         timeLast = frameCount;
         // sweeping = false;
@@ -698,8 +714,7 @@ image(img, 0, 0, 200, 200)
   sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
     }
     else if (gCubes.length==2) {
-  sweepMat2(20, [110,90, 110, 230], [380, 200,380, 400], 30, 25, 80, 40, gCubes[0], gCubes[1]);
-      
+  sweepMat2(20, [110,90, 110, 270], [380, 200 ,380, 400], 30, 25, 80, 25, gCubes[0], gCubes[1]);
     }
     else if (gCubes.length==3) {
     sweepMat3(20, [110,70, 110, 210, 110, 350], [400, 210, 400, 350, 400, 420], 30, 15, gCubes[0], gCubes[1], gCubes[2]);
