@@ -39,16 +39,11 @@ let port;
 let connectBtn;
 let serialConnected = true;
 
-// end
-
 function setup() {
   createCanvas(400, 400);
   img = loadImage("img.png")
 //serial code
 port = createSerial();
-
-
-
 
   // in setup, we can open ports we have used previously
   // without user interaction
@@ -670,7 +665,24 @@ function closest_cube(x, y) {
     }
     
   }
-
+/* // a slightly different approach to closest cube
+  function closest_cube(x, y) {
+    let minimum = 10,000;
+    let store;
+    let i;
+    let offsetX = (x+35)*2, offsetY = (y+20)*2; // why are these squared?
+    for(var n = 0; n<gCubes.length; n++){
+        store = ourDist(gCubes[n].sensorX,gCubes[n].sensorY, offsetX, offsetY);
+        if (store < minimum){
+          minimum = store;
+          i = n;
+        }
+      }
+      print(minimum);
+      print(gCubes[i]);
+      return gCubes[i];
+    }
+*/
   
   function serialActivities(){
     copy(0, 0, width, height, 0, -1, width, height);
@@ -707,8 +719,6 @@ function draw() {
 noStroke()
 background(0)
 image(img, 0, 0, 200, 200)
-
-
   if(sweeping == true){
     if (gCubes.length ==1) {
   sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
@@ -768,24 +778,20 @@ function rfidTest(string) {
       let rfid_found = false;
       for (var i = 0; i< rfidPos.length; i++) {
         if  (rfidPos[i][0] == rfidString) {
-           // we need to convert this to a int idk if it does that automatically
          cubeNum = string.substring(1,2);
            rfidPos[i][1] = gCubes[cubeNum].sensorX/2 -35;
            rfidPos[i][2] = gCubes[cubeNum].sensorY/2 -20; 
            rfid_found = true;
            
            break 
+           
         }
        }
        if(rfid_found == false){
-        
-        
-         rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20, frameCount])
+         rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20])
          print("repeats")
        }
       }
-      
-      
       print("rfid array: " + rfidPos)
     }
     else {
