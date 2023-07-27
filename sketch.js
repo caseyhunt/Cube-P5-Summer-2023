@@ -17,16 +17,16 @@ let ourBool;
 let newCube
 let magnet1ButtonUp, magnet1ButtonDown, magnet2ButtonUp, magnet2ButtonDown, magnet3ButtonUp, magnet3ButtonDown;
 
-let pieces = {"43bfee60":{"name":"X", "position": []}, 
-"738fee60":{"name":"O", "position": []},
-"339ded60":{"name":"X", "position": []}, 
-"23cfed60":{"name":"O", "position": []},
-"93e3ec60":{"name":"X", "position": []},
-"a3b4ec60":{"name":"O", "position": []},
-"e306ec60":{"name":"X", "position": []},
-"63d0eb60":{"name":"O", "position": []},
-"23d7ea60":{"name":"X", "position": []},
-"1316ea60":{"name":"O", "position": []},
+let pieces = {"43 bf ee 60":{"name":"X", "position": []}, 
+"73 8f ee 60":{"name":"O", "position": []},
+"33 9d ed 60":{"name":"X", "position": []}, 
+"23 cf ed 60":{"name":"O", "position": []},
+"93 e3 ec 60":{"name":"X", "position": []},
+"a3 b4 ec 60":{"name":"O", "position": []},
+"e3 06 ec 60":{"name":"X", "position": []},
+"63 d0 eb 60":{"name":"O", "position": []},
+"23 d7 ea 60":{"name":"X", "position": []},
+"13 16 ea 60":{"name":"O", "position": []},
 }
 
 // rfid and positions array stuff
@@ -753,6 +753,8 @@ commoncube.stop()
  }
 }
 
+let rfidString;
+
 //sees if there is an rfid at the position the cube is at
 function rfidTest(string) {
   let cubeNum;
@@ -789,7 +791,7 @@ function rfidTest(string) {
        }
        if(rfid_found == false){
          rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20])
-         print("repeats")
+         
        }
       }
       print("rfid array: " + rfidPos)
@@ -804,7 +806,7 @@ function removeRfid(){
   for(var i = 0;i<rfidPos.length;i++) {
     //for (var n = 0; n <gCubes.length; n++){    
     if (within(gCubes[0].sensorX/2 -35, rfidPos[i][1], 5) && within(gCubes[0].sensorY/2 -20, rfidPos[i][2], 5) || within(gCubes[1].sensorX/2 -35, rfidPos[i][1], 5) && within(gCubes[1].sensorY/2 -20, rfidPos[i][2], 5) ){
-      print("within last check")
+      
       print(rfidPos[i][3], frameCount)
       if(!within(rfidPos[i][3], frameCount, 50)){
         print("deleting circle"); 
@@ -820,31 +822,35 @@ function removeRfid(){
 function drawPieces(){
   if (rfidPos.length >=1){
     let space = 0;
+    let arrRfid = Object.keys(pieces);
     for(var i = 0; i < rfidPos.length; i++) {
     stroke(255, 255, 255)
     fill(255, 255, 255)
-    //draws Xs or Os
+    /*raws Xs or Os
     text(pieces[rfidPos[i][0]]["name"], rfidPos[i][1], rfidPos[i][2]);
     circle(rfidPos[i][1], rfidPos[i][2], 10)
-    //
+    */
+
+arrRfid.forEach((piece) => {
+  print(pieces[piece].name)
+if (pieces.rfidPos[i][0] == rfidString){
+  if (pieces[piece].name == "X"){
+    print("found X piece");
+textSize(50)
+text("X", rfidPos[i][1], rfidPos[i][2]);
+  }
+}
+else {
+textSize(50)
+text("O", rfidPos[i][1], rfidPos[i][2]);
+}
+})
     stroke(255, 0, 0)
     fill(255, 0, 0)
-    print("drawing circle")
+    
     circle(rfidPos[i][1], rfidPos[i][2], 10)
     space +=20
 // pieces
-let arrRfid = Object.keys(pieces);
-arrRfid.forEach((piece) => {
-if (pieces[piece].name == "X"){
-//textSize(50)
-//text("X", pieces[piece].position[0], pieces[piece].position[1]);
-}
-else {
-//textSize(50)
-//text("O", pieces[piece].position[0], pieces[piece].position[1]);
-}
-})
-  
   }
 }
 }
