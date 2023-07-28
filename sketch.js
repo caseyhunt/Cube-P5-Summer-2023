@@ -719,6 +719,7 @@ function draw() {
 noStroke()
 background(0)
 image(img, 0, 0, 200, 200)
+drawCubes()
   if(sweeping == true){
     if (gCubes.length ==1) {
   sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
@@ -733,7 +734,6 @@ image(img, 0, 0, 200, 200)
       sweepMat4(20, [95,75, 95,245, 245,75, 245, 245], [245, 245, 245, 400, 400, 245, 400,400], 30, 15, gCubes[0], gCubes[1], gCubes[2], gCubes[3]);
     }
   }
-drawCubes()
 removeRfid()
 serialActivities()
 drawPieces()
@@ -783,14 +783,16 @@ function rfidTest(string) {
          cubeNum = string.substring(1,2);
            rfidPos[i][1] = gCubes[cubeNum].sensorX/2 -35;
            rfidPos[i][2] = gCubes[cubeNum].sensorY/2 -20; 
+           rfidPos[i][3] = frameCount;
            rfid_found = true;
-           
+           print(rfidPos[i][1])
+           print(rfidPos[i][2])  
            break 
            
         }
        }
        if(rfid_found == false){
-         rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20])
+         rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20, frameCount])
          
        }
       }
@@ -804,18 +806,29 @@ function rfidTest(string) {
 //an rfid was previously found and removes the marker if no rfid is there
 function removeRfid(){
   for(var i = 0;i<rfidPos.length;i++) {
-    //for (var n = 0; n <gCubes.length; n++){    
+    //for (var n = 0; n <gCubes.length; n++){ 
+      if(!within(rfidPos[i][3], frameCount, 500)){
+      if(gCubes.length == 1){
+        if (within(gCubes[0].sensorX/2 -35, rfidPos[i][1], 5) && within(gCubes[0].sensorY/2 -20, rfidPos[i][2], 5)){
+          //print(rfidPos[i][3], frameCount)
+          print('rfid position:' + rfidPos[i][1])
+          print(rfidPos[i][2])
+          //print("deleting circle"); 
+          rfidPos.pop(i); 
+        }
+
+      } else if(gCubes.length ==2){  
     if (within(gCubes[0].sensorX/2 -35, rfidPos[i][1], 5) && within(gCubes[0].sensorY/2 -20, rfidPos[i][2], 5) || within(gCubes[1].sensorX/2 -35, rfidPos[i][1], 5) && within(gCubes[1].sensorY/2 -20, rfidPos[i][2], 5) ){
       
       print(rfidPos[i][3], frameCount)
-      if(!within(rfidPos[i][3], frameCount, 50)){
-        print("deleting circle"); 
           rfidPos.pop(i); 
-      }
+      
                     
      }
+    }
     // }
   }
+}
 }
 
 //draws the board game pieces
@@ -825,15 +838,21 @@ function drawPieces(){
     let arrRfid = Object.keys(pieces);
     for(var i = 0; i < rfidPos.length; i++) {
     stroke(255, 255, 255)
-    fill(255, 255, 255)
+    
     //raws Xs or Os
-    textSize(50)
+    textSize(10)
     if(pieces[rfidPos[i][0]]){
-    text(pieces[rfidPos[i][0]]["name"], rfidPos[i][1], rfidPos[i][2]);
+      print(pieces[rfidPos[i][0]]["name"]);
+      fill('purple')
+      circle(rfidPos[i][1]+5, rfidPos[i][2]+5, 15)
+      fill('white')
+      textSize(10)
+      text(pieces[rfidPos[i][0]]["name"], rfidPos[i][1]+1.531, rfidPos[i][2]+9);
+      
     }else{
       print("your tag is not in the pieces object")
     }
-    circle(rfidPos[i][1], rfidPos[i][2], 10)
+
     
 
 // arrRfid.forEach((piece) => {
@@ -846,14 +865,12 @@ function drawPieces(){
 //   }
 // }
 // else {
-// textSize(50)
+// textSize(400)
 // text("O", rfidPos[i][1], rfidPos[i][2]);
 // }
 // })
     stroke(255, 0, 0)
     fill(255, 0, 0)
-    
-    //circle(rfidPos[i][1], rfidPos[i][2], 10)
     space +=20
 // pieces
   }
