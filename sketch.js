@@ -16,6 +16,7 @@ let timeLast = 0;
 let ourBool;
 let newCube
 let magnet1ButtonUp, magnet1ButtonDown, magnet2ButtonUp, magnet2ButtonDown, magnet3ButtonUp, magnet3ButtonDown;
+let tictactoe
 
 let pieces = {"43 bf ee 60":{"name":"X", "position": [], "rfid":"43 bf ee 60"}, 
 "73 8f ee 60":{"name":"O", "position": [], "rfid":"73 8f ee 60"},
@@ -42,6 +43,7 @@ let serialConnected = true;
 function setup() {
   createCanvas(400, 400);
   img = loadImage("img.png")
+  tictactoe = loadImage("TicTacToe.png")
 //serial code
 port = createSerial();
 
@@ -716,9 +718,16 @@ function closest_cube(x, y) {
   }
 //main
 function draw() {
+if( gCubes[0]) {
+    print(gCubes[0].sensorX/2 -35, gCubes[0].sensorY/2-20)
+  }
+
 noStroke()
 background(0)
 image(img, 0, 0, 200, 200)
+stroke(0)
+drawTicTacToe(50, 71, 70)
+noStroke()
 drawCubes()
   if(sweeping == true){
     if (gCubes.length ==1) {
@@ -831,6 +840,15 @@ function removeRfid(){
 }
 }
 
+function drawTicTacToe(start, end, size) {
+  square(start, end, size)
+  line( size/3+start, end, size/3+start, end +size )
+  line(size *(2/3) + start, end, size * (2/3) + start, end + size)
+
+  line(start, size/3 + end, start + size, size/3 + end)
+  line(start, size * (2/3) + end, start+size, size * (2/3) + end)
+
+}
 //draws the board game pieces
 function drawPieces(){
   if (rfidPos.length >=1){
@@ -900,4 +918,102 @@ function mouseClicked(){
     // print("closest cube:", closest_cube((mouseX+35) *2, (mouseY+20)*2));
     moveCube(closest_cube(mouseX, mouseY))
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
