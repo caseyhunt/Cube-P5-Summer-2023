@@ -17,6 +17,7 @@ let ourBool;
 let newCube
 let magnet1ButtonUp, magnet1ButtonDown, magnet2ButtonUp, magnet2ButtonDown, magnet3ButtonUp, magnet3ButtonDown;
 let tictactoe
+let clearRFIDButton;
 
 let pieces = {"43 bf ee 60":{"name":"X", "position": [0,0], "rfid":"43 bf ee 60", 'lastScan': 0}, 
 "73 8f ee 60":{"name":"O", "position": [0,0], "rfid":"73 8f ee 60", 'lastScan': 0},
@@ -92,6 +93,12 @@ port = createSerial();
   magnet3ButtonDown.position(200, 350)
   magnet3ButtonDown.mousePressed(magnet3Down)
 
+  clearRFIDButton = createButton("Clear RFIDs")
+  clearRFIDButton.position(250, 100)
+  clearRFIDButton.mousePressed(clearRfids)
+
+
+
 
 
 //end
@@ -117,6 +124,17 @@ port = createSerial();
   useAnyCubeButton = createButton("anyCube")
   useAnyCubeButton.mousePressed(useAnyCube)
 }
+
+function clearRfids() {
+  let arrRfid = Object.keys(pieces);
+  arrRfid.forEach((piece) => {
+    pieces[piece]['position'][0] = 0;
+    pieces[piece]['position'][1] = 0; 
+
+    pieces[piece]['lastScan'] = 0;
+  })
+}
+
 
 // serial functions
 function connectBtnClick() {
@@ -736,7 +754,7 @@ function closest_cube(x, y) {
   }
 //main
 function draw() {
-noStroke()
+noStroke()    
 background(0)
 image(img, 0, 0, 200, 200)
 stroke(0)
