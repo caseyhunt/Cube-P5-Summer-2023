@@ -18,16 +18,16 @@ let newCube
 let magnet1ButtonUp, magnet1ButtonDown, magnet2ButtonUp, magnet2ButtonDown, magnet3ButtonUp, magnet3ButtonDown;
 let tictactoe
 
-let pieces = {"43 bf ee 60":{"name":"X", "position": [], "rfid":"43 bf ee 60"}, 
-"73 8f ee 60":{"name":"O", "position": [], "rfid":"73 8f ee 60"},
-"33 9d ed 60":{"name":"X", "position": [], "rfid":"33 9d ed 60"}, 
-"23 cf ed 60":{"name":"O", "position": [], "rfid":"23 cf ed 60"},
-"93 e3 ec 60":{"name":"X", "position": [], "rfid":"93 e3 ec 60"},
-"a3 b4 ec 60":{"name":"O", "position": [], "rfid":"a3 b4 ec 60"},
-"e3 06 ec 60":{"name":"X", "position": [], "rfid":"e3 06 ec 60"},
-"63 d0 eb 60":{"name":"O", "position": [], "rfid":"63 d0 eb 60"},
-"23 d7 ea 60":{"name":"X", "position": [], "rfid":"23 d7 ea 60"},
-"13 16 ea 60":{"name":"O", "position": [], "rfid":"13 16 ea 60"},
+let pieces = {"43 bf ee 60":{"name":"X", "position": [0,0], "rfid":"43 bf ee 60", 'lastScan': 0}, 
+"73 8f ee 60":{"name":"O", "position": [0,0], "rfid":"73 8f ee 60", 'lastScan': 0},
+"33 9d ed 60":{"name":"X", "position": [0,0], "rfid":"33 9d ed 60", 'lastScan': 0}, 
+"23 cf ed 60":{"name":"O", "position": [0,0], "rfid":"23 cf ed 60", 'lastScan': 0},
+"93 e3 ec 60":{"name":"X", "position": [0,0], "rfid":"93 e3 ec 60", 'lastScan': 0},
+"a3 b4 ec 60":{"name":"O", "position": [0,0], "rfid":"a3 b4 ec 60", 'lastScan': 0},
+"e3 06 ec 60":{"name":"X", "position": [0,0], "rfid":"e3 06 ec 60", 'lastScan': 0},
+"63 d0 eb 60":{"name":"O", "position": [0,0], "rfid":"63 d0 eb 60", 'lastScan': 0},
+"23 d7 ea 60":{"name":"X", "position": [0,0], "rfid":"23 d7 ea 60", 'lastScan': 0},
+"13 16 ea 60":{"name":"O", "position": [0,0], "rfid":"13 16 ea 60", 'lastScan': 0},
 }
 
 // rfid and positions array stuff
@@ -41,6 +41,7 @@ let connectBtn;
 let serialConnected = true;
 
 function setup() {
+  frameRate(30);
   createCanvas(400, 400);
   img = loadImage("img.png")
   tictactoe = loadImage("TicTacToe.png")
@@ -189,34 +190,11 @@ function sweep() {
   }     
 //The intial function to draw and select cubes
 function drawCubes(){
-  push();
-  if (gCubes[0]) {
-    stroke(cubeColor[0]);
-    fill(cubeColor[0]);
-    square((gCubes[0].sensorX/2) -35, gCubes[0].sensorY/2 - 20, 10)
-    pop();
-    push();
-}  
-if (gCubes[1]) {
-  stroke(cubeColor[1]);
-  fill(cubeColor[1]);
-  square((gCubes[1].sensorX/2) -35, gCubes[1].sensorY/2 - 20, 10)
-}
-  pop();
-  push();
-if (gCubes[2]) {
-  stroke(cubeColor[2]);
-  fill(cubeColor[2]);
-  square((gCubes[2].sensorX/2) -35, gCubes[2].sensorY/2 - 20, 10)
-}
-  pop();
-  push()
-if (gCubes[3]) {
-  stroke(cubeColor[3]);
-  fill(cubeColor[3]);
-  square((gCubes[3].sensorX/2) -35, gCubes[3].sensorY/2 - 20, 10)
-}
- pop();
+  for(i= 0; i<gCubes.length;i++){
+    stroke(cubeColor[i]);
+    fill(cubeColor[i]);
+    square((gCubes[i].sensorX/2) -35, gCubes[i].sensorY/2 - 20, 10);
+  }
 }
 
 function ConnectCube(){
@@ -282,7 +260,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
   let inflectionX = maxArr[0] - 30
   let dx = maxArr[0] - minArr[0]
   if (cube) {
-    print(cube.sensorY, j);
+    //print(cube.sensorY, j);
   if(cube.sensorY > maxArr[1] && j!=0 && (frameCount - timeLast)>lockoutT ){
     //stops once the cube hits the maximum Y
     sweeping = false;
@@ -291,7 +269,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
   }else{
     if(j == 0 && (frameCount - timeLast) > lockoutT){
       cubepos = minArr;
-      print(cubepos)
+      //print(cubepos)
       cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, P5tCube.moveTypeId.rotate1st , P5tCube.easeTypeId.decel, cubeWaitTime )
       j+=1
       timeLast = frameCount;
@@ -312,7 +290,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
       }
     }
     else if(j%2 == 0){   
-      print("second set");
+      //print("second set");
       if(within(cube.sensorY, cubepos[1], 20) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX){
         print("moving back to start")
         cubepos[0]-=dx;
@@ -322,8 +300,8 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
       }
       if((cubepos[0] < inflectionX) && within(cube.sensorX, cubepos[0], 25)){
         cubepos[1] += dy;
-        print("moving y")
-        print(cubepos);
+        //print("moving y")
+        //print(cubepos);
         cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
         timeLast = frameCount;
@@ -356,7 +334,8 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, xSpeed, ySpeed, c
       else if (j%2 ==1) {
         //print(cubepos)
         //print(j)
-        if(within(cube1.sensorX, cubepos[0], 20) && within(cube1.sensorY, cubepos[1], 20) && (frameCount - timeLast)>lockoutT && cubepos[0]<inflectionX && within(cube2.sensorX, cubepos[2], 20) && within(cube2.sensorY, cubepos[3], 20) && cubepos[2]<inflectionX){
+        // cubepos[0]<inflectionX && && cubepos[2]<inflectionX
+        if(within(cube1.sensorX, cubepos[0], 15) && cubepos[0]<inflectionX && cubepos[2]<inflectionX && within(cube1.sensorY, cubepos[1], 15) && (frameCount - timeLast)>lockoutT && within(cube2.sensorX, cubepos[2], 15) && within(cube2.sensorY, cubepos[3], 15) ){
         // print("moving x right")
         print("gone to step two")
           if(cube1.sensorY < maxArr[1]){
@@ -369,7 +348,7 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, xSpeed, ySpeed, c
          }
         timeLast = frameCount;
       }
-        if((cubepos[0] > inflectionX) && within(cube1.sensorX, cubepos[0], 15) && (frameCount - timeLast)>lockoutT && (cubepos[2] > inflectionX) && within(cube2.sensorX, cubepos[2], 15)){
+        if(within(cube1.sensorX, cubepos[0], 15) && (frameCount - timeLast)>lockoutT && within(cube2.sensorX, cubepos[2], 15)){
       print("moving y right")
       if(cube1.sensorY < maxArr[1]){
       cubepos[1] += dy;
@@ -384,19 +363,21 @@ function sweepMat2(dy, minArr, maxArr, lockoutT, cubeWaitTime, xSpeed, ySpeed, c
         }
       }
       else if (j % 2 == 0) {
-        if(within(cube1.sensorY, cubepos[1], 25) && (frameCount - timeLast)>30 && cubepos[0] > inflectionX && within(cube2.sensorY, cubepos[3], 25) && cubepos[2] > inflectionX){
+        print("jmod2is0")
+        if((frameCount - timeLast)>30 && within(cube1.sensorY, cubepos[1], 15) && within(cube2.sensorY, cubepos[3], 15) && cubepos[0] > inflectionX && cubepos[3] > inflectionX){
         print("moving back to start")
           if(cube1.sensorY < maxArr[1]){
         cubepos[0]-=dx;
         cube1.moveTo({ x: cubepos[0], y: cubepos[1]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
+        timeLast = frameCount;
          }
-          if(cube2.sensorY < maxArr[3]){
+          if(cube2.sensorY < maxArr[3] && (frameCount - timeLast)>30){
         cubepos[2] -= dx;
         cube2.moveTo({ x: cubepos[2], y: cubepos[3]}, xSpeed, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel, cubeWaitTime);
          }
         timeLast = frameCount; 
       }
-        if((cubepos[0] < inflectionX) && within(cube1.sensorX, cubepos[0], 25) && (cubepos[2] < inflectionX) && within(cube2.sensorX, cubepos[2], 25)){
+        if(within(cube1.sensorX, cubepos[0], 25) && within(cube2.sensorX, cubepos[2], 25)){
           if(cube1.sensorY < maxArr[1]){
           cubepos[1] += dy;
           cube1.moveTo( { x: cubepos[0], y: cubepos[1]}, ySpeed, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
@@ -652,7 +633,9 @@ function closest_cube(x, y) {
   let offsetX = (x+35)*2, offsetY = (y+20)*2;
   let vArr = [];
   for(var n = 0; n<gCubes.length; n++){
-      vArr.push(ourDist(gCubes[n].sensorX,gCubes[n].sensorY, offsetX, offsetY))}
+      vArr.push(ourDist(gCubes[n].sensorX,gCubes[n].sensorY, offsetX, offsetY))
+    }
+
     minimum = min(vArr);
     print(vArr)
     print(minimum)
@@ -667,6 +650,23 @@ function closest_cube(x, y) {
     }
     
   }
+
+  function closest_piece(cube){
+    let minimum = 10000;
+    let store;
+    let i; 
+    for(var n = 0; n<gCubes.length; n++){
+        store = ourDist(cube.sensorX,cube.sensorY, );
+        if (store < minimum){
+          minimum = store;
+          i = n;
+        }
+      }
+      print(minimum);
+      print(gCubes[i]);
+      return gCubes[i];
+   }
+  
 /* // a slightly different approach to closest cube
   function closest_cube(x, y) {
     let minimum = 10,000;
@@ -702,7 +702,6 @@ function closest_cube(x, y) {
     //   rfidTest(myStr);
     // }
     if (myStr[0] == "{") {
-      print("Yessuh")
       rfidTest(myStr)
       myStr = ""
     }
@@ -718,23 +717,23 @@ function closest_cube(x, y) {
   }
 //main
 function draw() {
-if( gCubes[0]) {
-    print(gCubes[0].sensorX/2 -35, gCubes[0].sensorY/2-20)
-  }
-
 noStroke()
 background(0)
 image(img, 0, 0, 200, 200)
 stroke(0)
+noFill()
 drawTicTacToe(50, 71, 70)
 noStroke()
 drawCubes()
+serialActivities()
+drawPieces()
+
   if(sweeping == true){
     if (gCubes.length ==1) {
   sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
     }
     else if (gCubes.length==2) {
-  sweepMat2(20, [110,90, 110, 270], [380, 200 ,380, 400], 30, 25, 80, 25, gCubes[0], gCubes[1]);
+  sweepMat2(20, [110,90, 110, 270], [380, 200 ,380, 400], 30, 25, 50, 25, gCubes[0], gCubes[1]);
     }
     else if (gCubes.length==3) {
     sweepMat3(20, [110,70, 110, 210, 110, 350], [400, 210, 400, 350, 400, 420], 30, 15, gCubes[0], gCubes[1], gCubes[2]);
@@ -743,9 +742,10 @@ drawCubes()
       sweepMat4(20, [95,75, 95,245, 245,75, 245, 245], [245, 245, 245, 400, 400, 245, 400,400], 30, 15, gCubes[0], gCubes[1], gCubes[2], gCubes[3]);
     }
   }
-removeRfid()
-serialActivities()
-drawPieces()
+
+// removeRfid()
+
+
 }
 
 //moves cube to a position and puts a square at that position
@@ -775,13 +775,28 @@ function rfidTest(string) {
     //if the cubes is connected, start parsing the string
     if (gCubes[cubeNum]) {
       rfidString = string.substring(3, string.length-2)
-      print(rfidString)
       rfidString = rfidString.replace(" ", "")
-      print(rfidString)
+      print('rfid: ' + rfidString)
+      piece_x = gCubes[cubeNum].sensorX/2 -35;
+      piece_y = gCubes[cubeNum].sensorY/2 -20; 
       
+      pieces[rfidString]['position'][0] = piece_x
+      print('x: ' + piece_x)
+      pieces[rfidString]['position'][1] = piece_y
+      print('y: ' + piece_y)
+
+      pieces[rfidString]['lastScan'] = frameCount;
+
       //if we don't have any rfid tags, then push the one we have; if we do
       //then we need to see if it is equal to a previous one, and update
       //the position
+
+     /* for(var i = 0; i < rfidPos.length; i++) {
+        if(pieces[rfidPos[i][0]]){
+        pieces[rfidPos[i][0]]["position"].push(rfidPos[i][1], rfidPos[i][2])
+          print('object positions: ' + pieces[rfidPos[i][0]]["position"])
+        }
+      /*
       if (rfidPos.length == 0) {
         rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20, frameCount])
       }
@@ -797,23 +812,44 @@ function rfidTest(string) {
            print(rfidPos[i][1])
            print(rfidPos[i][2])  
            break 
-           
+
         }
        }
        if(rfid_found == false){
-         rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20, frameCount])
-         
-       }
-      }
-      print("rfid array: " + rfidPos)
-    }
+         rfidPos.push([rfidString, gCubes[cubeNum].sensorX/2 -35, gCubes[cubeNum].sensorY/2 -20, frameCount])  
+      
+       */  }
+      //}
+    //  print("rfid array: " + rfidPos)
+  //  }
+  
     else {
       print("cube not connected");
     }
-}
+  }
+//}
 //function sees if there is a cube at a position where 
 //an rfid was previously found and removes the marker if no rfid is there
 function removeRfid(){
+  let arrRfid = Object.keys(pieces);
+  arrRfid.forEach((piece))
+  if(!within(pieces[piece]['lastScan'], frameCount,500)){
+    for (var n = 0; n <gCubes.length; n++){ 
+      if(within(gCubes[n].sensorX, pieces[piece]['position'][0],5) 
+      && within(gCubes[n].sensorY, pieces[piece]['position'][0], 5)) {
+        pieces[piece]['position'][0] = 0;
+        pieces[piece]['position'][1] = 0; 
+      }
+    
+    }
+
+  }
+
+  }
+
+
+
+  /*
   for(var i = 0;i<rfidPos.length;i++) {
     //for (var n = 0; n <gCubes.length; n++){ 
       if(!within(rfidPos[i][3], frameCount, 500)){
@@ -839,7 +875,7 @@ function removeRfid(){
   }
 }
 }
-
+*/
 function drawTicTacToe(start, end, size) {
   square(start, end, size)
   line( size/3+start, end, size/3+start, end +size )
@@ -851,25 +887,25 @@ function drawTicTacToe(start, end, size) {
 }
 //draws the board game pieces
 function drawPieces(){
-  if (rfidPos.length >=1){
+  //if (rfidPos.length >=1){
     let space = 0;
     let arrRfid = Object.keys(pieces);
-    for(var i = 0; i < rfidPos.length; i++) {
+    arrRfid.forEach((piece) => {
     stroke(255, 255, 255)
     
-    //raws Xs or Os
+    //draws Xs or Os
     textSize(10)
-    if(pieces[rfidPos[i][0]]){
-      print(pieces[rfidPos[i][0]]["name"]);
-      fill('purple')
-      circle(rfidPos[i][1]+5, rfidPos[i][2]+5, 15)
-      fill('white')
-      textSize(10)
-      text(pieces[rfidPos[i][0]]["name"], rfidPos[i][1]+1.531, rfidPos[i][2]+9);
-      
-    }else{
-      print("your tag is not in the pieces object")
-    }
+    if (!pieces[piece]['position'][0] == 0){
+     // print(pieces[rfidPos[i][0]]["name"]);
+     fill('purple')
+     circle(pieces[piece]["position"][0]+5, pieces[piece]["position"][1]+ 1.5, 15)
+     fill('black')
+     textSize(10)
+     text(pieces[piece]["name"], pieces[piece]["position"][0] + 2, pieces[piece]["position"][1] + 2); 
+    } 
+
+    })
+  }
 
     
 
@@ -887,13 +923,12 @@ function drawPieces(){
 // text("O", rfidPos[i][1], rfidPos[i][2]);
 // }
 // })
-    stroke(255, 0, 0)
-    fill(255, 0, 0)
-    space +=20
+  //  stroke(255, 0, 0)
+    //fill(255, 0, 0)
+    //space +=20
 // pieces
-  }
-}
-}
+//}
+//}
 
 //moves the closest cube to the positon pressed on the screen
 function mouseClicked(){
@@ -918,102 +953,4 @@ function mouseClicked(){
     // print("closest cube:", closest_cube((mouseX+35) *2, (mouseY+20)*2));
     moveCube(closest_cube(mouseX, mouseY))
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
