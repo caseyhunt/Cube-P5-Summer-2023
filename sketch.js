@@ -746,13 +746,14 @@ noStroke()
 drawCubes()
 serialActivities()
 drawPieces()
+removeRfid()
 
   if(sweeping == true){
     if (gCubes.length ==1) {
   sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
     }
     else if (gCubes.length==2) {
-  sweepMat2(20, [150,110, 150, 270], [330, 270 ,330, 310], 30, 25, 50, 25, gCubes[0], gCubes[1]);
+  sweepMat2(20, [120,125, 120, 270], [380, 270 ,380, 370], 30, 25, 50, 25, gCubes[0], gCubes[1]);
     }
     else if (gCubes.length==3) {
     sweepMat3(20, [110,70, 110, 210, 110, 350], [400, 210, 400, 350, 400, 420], 30, 15, gCubes[0], gCubes[1], gCubes[2]);
@@ -762,7 +763,7 @@ drawPieces()
     }
   }
 
-// removeRfid()
+// 
 
 
 }
@@ -851,19 +852,17 @@ function rfidTest(string) {
 //an rfid was previously found and removes the marker if no rfid is there
 function removeRfid(){
   let arrRfid = Object.keys(pieces);
-  arrRfid.forEach((piece))
+  arrRfid.forEach((piece) => {
   if(!within(pieces[piece]['lastScan'], frameCount,500)){
     for (var n = 0; n <gCubes.length; n++){ 
       if(within(gCubes[n].sensorX, pieces[piece]['position'][0],5) 
       && within(gCubes[n].sensorY, pieces[piece]['position'][0], 5)) {
         pieces[piece]['position'][0] = 0;
         pieces[piece]['position'][1] = 0; 
-      }
-    
+      }   
     }
-
   }
-
+})
   }
 
 
