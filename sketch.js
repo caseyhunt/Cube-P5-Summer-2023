@@ -1,5 +1,5 @@
 let connectButton, useAnyCubeButton;
-let lightColor
+// let lightColor
 let gCubes = [];
 let cubeColor = [];
 let img
@@ -18,6 +18,7 @@ let newCube
 let magnet1ButtonUp, magnet1ButtonDown, magnet2ButtonUp, magnet2ButtonDown, magnet3ButtonUp, magnet3ButtonDown;
 let tictactoe
 let clearRFIDButton;
+let closestPieceButton
 
 let pieces = {"43 bf ee 60":{"name":"X", "position": [0,0], "rfid":"43 bf ee 60", 'lastScan': 0}, 
 "73 8f ee 60":{"name":"O", "position": [0,0], "rfid":"73 8f ee 60", 'lastScan': 0},
@@ -59,17 +60,20 @@ port = createSerial();
 
   // any other ports can be opened via a dialog after
   // user interaction (see connectBtnClick below)
+  closestPieceButton = createButton("Closest Piece Find")
+  closestPieceButton.position(300, 200)
+  closestPieceButton.mousePressed(closest_piece)
 
   connectBtn = createButton('Connect to Arduino');
   connectBtn.position(80, 200);
   connectBtn.mousePressed(connectBtnClick);
 
-  let sendBtn = createButton('motor up');
-  sendBtn.position(220, 200);
-  sendBtn.mousePressed(sendBtnClick);
-  let sendBtn2 = createButton('motor down');
-  sendBtn2.position(220, 225);
-  sendBtn2.mousePressed(sendBtnClick2);
+  //let sendBtn = createButton('motor up');
+  //sendBtn.position(220, 200);
+  //sendBtn.mousePressed(sendBtnClick);
+  //let sendBtn2 = createButton('motor down');
+  // sendBtn2.position(220, 225);
+  // sendBtn2.mousePressed(sendBtnClick2);
 
   magnet1ButtonUp = createButton('Magnet 1 up')
   magnet1ButtonUp.position(0, 300)
@@ -80,21 +84,21 @@ port = createSerial();
 
 
   magnet2ButtonUp = createButton('Magnet 2 up')
-  magnet2ButtonUp.position(100, 300)
+  magnet2ButtonUp.position(150, 300)
   magnet2ButtonUp.mousePressed(magnet2Up)
   magnet2ButtonDown = createButton('Magnet 2 down')
-  magnet2ButtonDown.position(100, 350)
+  magnet2ButtonDown.position(150, 350)
   magnet2ButtonDown.mousePressed(magnet2Down)
   
-  magnet3ButtonUp = createButton('Magnet 3 up')
-  magnet3ButtonUp.position(200, 300)
-  magnet3ButtonUp.mousePressed(magnet3Up)
-  magnet3ButtonDown = createButton('Magnet 3 down')
-  magnet3ButtonDown.position(200, 350)
-  magnet3ButtonDown.mousePressed(magnet3Down)
+  // magnet3ButtonUp = createButton('Magnet 3 up')
+  // magnet3ButtonUp.position(200, 300)
+  // magnet3ButtonUp.mousePressed(magnet3Up)
+  // magnet3ButtonDown = createButton('Magnet 3 down')
+  // magnet3ButtonDown.position(200, 350)
+  // magnet3ButtonDown.mousePressed(magnet3Down)
 
   clearRFIDButton = createButton("Clear RFIDs")
-  clearRFIDButton.position(250, 100)
+  // clearRFIDButton.position(250, 100)
   clearRFIDButton.mousePressed(clearRfids)
 
 
@@ -105,20 +109,21 @@ port = createSerial();
 
   connectButton = createButton("connect cube")
   connectButton.mousePressed(ConnectCube)
-  lightColor = createButton('light')
-  lightColor.mousePressed(cubeLight)
+  // lightColor = createButton('light')
+  // lightColor.mousePressed(cubeLight)
   cube1Button = createButton("cube1")
+  cube1Button.position(0, 325)
   cube1Button.style('background-color', 'green')
   cube1Button.mousePressed(cube1)
   cube2Button = createButton("cube2")
-  cube2Button.style('background-color', 'blue')
+  cube2Button.style('background-color', 'red')
   cube2Button.mousePressed(cube2)
-  cube3Button = createButton("cube3")
-  cube3Button.style('background-color', 'red')
-  cube3Button.mousePressed(cube3)
-  cube4Button = createButton("cube4")
-  cube4Button.style('background-color', 'yellow')
-  cube4Button.mousePressed(cube4)
+  // cube3Button = createButton("cube3")
+  // cube3Button.style('background-color', 'red')
+  // cube3Button.mousePressed(cube3)
+  // cube4Button = createButton("cube4")
+  // cube4Button.style('background-color', 'yellow')
+  // cube4Button.mousePressed(cube4)
   sweepButton = createButton("sweep")
   sweepButton.mousePressed(sweep)
   useAnyCubeButton = createButton("anyCube")
@@ -255,12 +260,12 @@ function cube4(){
     cubeColor[2] = 'yellow';
 }
 
-function cubeLight(){
-  randomColor()
-  if (gCubes[0]) {
-    gCubes[0].turnLightOn(color(r, g, b))
-  }
-}
+// function cubeLight(){
+//   randomColor()
+//   if (gCubes[0]) {
+//     gCubes[0].turnLightOn(color(r, g, b))
+//   }
+// }
 
 function randomColor(){
   r = random(255)
@@ -688,20 +693,21 @@ function closest_cube(x, y) {
     
   }
 
-  function closest_piece(cube){
+  function closest_piece(){
     let minimum = 10000;
     let store;
-    let i; 
-    for(var n = 0; n<gCubes.length; n++){
-        store = ourDist(cube.sensorX,cube.sensorY, );
+    let arrRfid = Object.keys(pieces);
+    let RfidIdentity;
+  arrRfid.forEach((piece) => {
+        store = ourDist(selectedCube.sensorX, selectedCube.sensorY, pieces[piece]['position'[0], pieces[piece]['position'[1]]]);
         if (store < minimum){
-          minimum = store;
-          i = n;
+         minimum = store
+         RfidIdentity = pieces[piece]['rfid']
         }
-      }
+      })
+      
       print(minimum);
-      print(gCubes[i]);
-      return gCubes[i];
+      print(RfidIdentity);
    }
   
 /* // a slightly different approach to closest cube
@@ -790,7 +796,7 @@ removeRfid()
 function moveCube(commoncube){
    if (commoncube) {
    if (mouseX < 200 && mouseY < 200) {
-      commoncube.moveTo( { x: (mouseX+35) *2, y: (mouseY+20)*2}, 50, undefined, P5tCube.easeTypeId.decel )
+      commoncube.moveTo( { x: (mouseX+35) *2, y: (mouseY+20)*2}, 25, undefined, P5tCube.easeTypeId.decel )
      square((commoncube.sensorX/2) -35, commoncube.sensorY/2 - 20, 10)
      text(commoncube, commoncube.sensorX, commoncube.sensorY)
     }
@@ -883,8 +889,6 @@ function removeRfid(){
 })
   }
 
-
-
   /*
   for(var i = 0;i<rfidPos.length;i++) {
     //for (var n = 0; n <gCubes.length; n++){ 
@@ -935,15 +939,13 @@ function drawPieces(){
      // print(pieces[rfidPos[i][0]]["name"]);
      fill('purple')
      circle(pieces[piece]["position"][0]+5, pieces[piece]["position"][1]+ 1.5, 15)
-     fill('black')
+     fill('white')
      textSize(10)
      text(pieces[piece]["name"], pieces[piece]["position"][0] + 2, pieces[piece]["position"][1] + 2); 
     } 
 
     })
   }
-
-    
 
 // arrRfid.forEach((piece) => {
 //   print(pieces[piece].name)
@@ -989,4 +991,5 @@ function mouseClicked(){
     // print("closest cube:", closest_cube((mouseX+35) *2, (mouseY+20)*2));
     moveCube(closest_cube(mouseX, mouseY))
   }
+  
 }
