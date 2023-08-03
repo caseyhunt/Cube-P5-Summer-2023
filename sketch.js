@@ -19,6 +19,9 @@ let magnet1ButtonUp, magnet1ButtonDown, magnet2ButtonUp, magnet2ButtonDown, magn
 let tictactoe
 let clearRFIDButton;
 let closestPieceButton
+let spinCube = false;
+let movestart
+let spinningLeft = false;
 
 let pieces = {"43 bf ee 60":{"name":"X", "position": [0,0], "rfid":"43 bf ee 60", 'lastScan': 0}, 
 "73 8f ee 60":{"name":"O", "position": [0,0], "rfid":"73 8f ee 60", 'lastScan': 0},
@@ -30,6 +33,8 @@ let pieces = {"43 bf ee 60":{"name":"X", "position": [0,0], "rfid":"43 bf ee 60"
 "63 d0 eb 60":{"name":"O", "position": [0,0], "rfid":"63 d0 eb 60", 'lastScan': 0},
 "23 d7 ea 60":{"name":"X", "position": [0,0], "rfid":"23 d7 ea 60", 'lastScan': 0},
 "13 16 ea 60":{"name":"O", "position": [0,0], "rfid":"13 16 ea 60", 'lastScan': 0},
+"73 bc ba 60":{"name":"", "position": [0,0], "rfid":"73 bc ba 60", 'lastScan': 0},
+"73 17 ba 60":{"name":"", "position": [0,0], "rfid":"73 17 ba 60", 'lastScan': 0}
 }
 
 // rfid and positions array stuff
@@ -140,6 +145,16 @@ function clearRfids() {
   })
 }
 
+function spinningCube(cube, direction) {
+
+if(direction == "left"){
+cube.move(25, 60, 130);
+}else{
+  cube.move(60, 25, 130);
+ 
+}
+//cube.move(100, 25, 50)
+}
 
 // serial functions
 function connectBtnClick() {
@@ -163,11 +178,14 @@ function sendBtnClick2() {
 function magnet1Up(){
   print("Magnet 1 Up")
     port.write("<0,1>");
+    
   }
 
   function magnet1Down(){
     print("Magnet 1 down")
     port.write("<0,0>");
+    movestart = frameCount;
+    spinCube = gCubes[0];
   }
 
   function magnet2Up(){
@@ -178,6 +196,9 @@ function magnet1Up(){
   function magnet2Down(){
     print("Magnet 2 down")
     port.write("<1,0>");
+    spinCube = gCubes[1];
+    movestart = frameCount;
+
   }
 
   function magnet3Up(){
@@ -307,7 +328,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
       if((cubepos[0] > inflectionX) && within(cube.sensorX, cubepos[0], 15) && (frameCount - timeLast)>lockoutT){
       // print("moving y right")
       cubepos[1] += dy;
-      cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+      cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 25, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
         timeLast = frameCount;
       }
@@ -325,7 +346,7 @@ function sweepMat(dy, minArr, maxArr, lockoutT, cubeWaitTime, cube){
         cubepos[1] += dy;
         //print("moving y")
         //print(cubepos);
-        cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 50, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
+        cube.moveTo( { x: cubepos[0], y: cubepos[1]}, 25, undefined, P5tCube.easeTypeId.decel, cubeWaitTime )
         j+=1
         timeLast = frameCount;
         // sweeping = false;
@@ -771,13 +792,28 @@ drawCubes()
 serialActivities()
 drawPieces()
 removeRfid()
+if(spinCube != false){
+  print("spinning")
+  if(spinningLeft != true){
+  spinningCube(spinCube, "left")
+  spinningLeft = true;
+  moveStart = frameCount;
+  print("left")
+  }
+  else if(spinningLeft == true && (frameCount-moveStart) > 30){
+    spinningCube(spinCube, "right")
+    spinningLeft = false;
+    spinCube = false;
+    print("right")
+  }
+}
 
   if(sweeping == true){
     if (gCubes.length ==1) {
-  sweepMat(20, [110,90], [400,410], 30, 15, gCubes[0]);
+  sweepMat(20, [120,125], [350,370], 30, 15, gCubes[0]);
     }
     else if (gCubes.length==2) {
-  sweepMat2(20, [120,125, 120, 270], [380, 270 ,380, 370], 30, 25, 50, 25, gCubes[0], gCubes[1]);
+  sweepMat2(15, [120,125, 120, 270], [350, 270 ,350, 370], 30, 25, 30, 25, gCubes[0], gCubes[1]);
     }
     else if (gCubes.length==3) {
     sweepMat3(20, [110,70, 110, 210, 110, 350], [400, 210, 400, 350, 400, 420], 30, 15, gCubes[0], gCubes[1], gCubes[2]);
@@ -796,9 +832,9 @@ removeRfid()
 function moveCube(commoncube){
    if (commoncube) {
    if (mouseX < 200 && mouseY < 200) {
-      commoncube.moveTo( { x: (mouseX+35) *2, y: (mouseY+20)*2}, 25, undefined, P5tCube.easeTypeId.decel )
+      commoncube.moveTo( { x: (mouseX+35) *2, y: (mouseY+20)*2}, 20, P5tCube.moveTypeId.rotate1st, P5tCube.easeTypeId.decel )
      square((commoncube.sensorX/2) -35, commoncube.sensorY/2 - 20, 10)
-     text(commoncube, commoncube.sensorX, commoncube.sensorY)
+     //text(commoncube, commoncube.sensorX, commoncube.sensorY)
     }
    else {
 commoncube.stop()
