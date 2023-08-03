@@ -973,7 +973,7 @@ function mouseClicked(){
   testX = mouseX;
   testY = mouseY;
   if (selectedCube == gCubes[0]){
-    moveCube(gCubes[0])
+    moveCube(gCubes[0]);
   }
   if (selectedCube == gCubes[1]){
     moveCube(gCubes[1])
